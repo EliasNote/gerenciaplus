@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ProdutoService } from './produto.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('produto')
+@UseGuards(AuthGuard('jwt'))
 export class ProdutoController {
   constructor(private readonly produtoService: ProdutoService) {}
 
