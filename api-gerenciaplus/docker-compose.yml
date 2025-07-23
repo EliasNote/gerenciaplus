@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    networks:
+      - broker-kafka
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./realms/:/opt/keycloak/data/import/
+    ports:
+      - "8081:8081"
+    command: ["start-dev", "--import-realm", "--http-port=8081"]
+
+networks:
+  broker-kafka:
+    driver: bridge

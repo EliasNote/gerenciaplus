@@ -14,7 +14,7 @@ import { UpdateLojaDto } from './dto/update-loja.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('loja')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('oauth2'))
 export class LojaController {
   constructor(private readonly lojaService: LojaService) {}
 
