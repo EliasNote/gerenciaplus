@@ -8,6 +8,7 @@ import { LojaService } from 'src/loja/loja.service';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import * as bcrypt from 'bcryptjs';
 import { UsuarioResponseDto } from './dto/response-usuario.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UsuarioService {
@@ -15,6 +16,7 @@ export class UsuarioService {
     @InjectRepository(Usuario)
     private usuarioRepository: Repository<Usuario>,
     private lojaService: LojaService,
+    private authService: AuthService
   ) {}
 
   async create(
@@ -28,6 +30,8 @@ export class UsuarioService {
       loja,
     });
     const usuarioSave = await this.usuarioRepository.save(usuario);
+    await this.authService.create(createUsuarioDto)
+
     return this.generateUsuarioResponseDto(usuarioSave);
   }
 
@@ -66,8 +70,9 @@ export class UsuarioService {
     return {
       id: usuario.id,
       nome: usuario.nome,
+      sobreNome: usuario.sobreNome,
       email: usuario.email,
-      nivel_acesso: usuario.nivel_acesso,
+      nivelAcesso: usuario.nivelAcesso,
     };
   }
 }

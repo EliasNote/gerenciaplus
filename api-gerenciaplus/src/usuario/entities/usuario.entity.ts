@@ -12,6 +12,9 @@ export class Usuario {
   @Column()
   nome: string;
 
+  @Column()
+  sobreNome: string;
+
   @Column({ unique: true })
   email: string;
 
@@ -19,5 +22,5 @@ export class Usuario {
   senha: string;
 
   @Column()
-  nivel_acesso: string;
+  nivelAcesso: string;
 }
