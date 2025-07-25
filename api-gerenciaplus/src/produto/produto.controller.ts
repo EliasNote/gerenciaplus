@@ -14,7 +14,7 @@ import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('produto')
-@UseGuards(AuthGuard('oauth2'))
+@UseGuards(AuthGuard('jwt'))
 export class ProdutoController {
   constructor(private readonly produtoService: ProdutoService) {}
 

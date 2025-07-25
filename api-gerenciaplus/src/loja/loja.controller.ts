@@ -22,25 +22,25 @@ export class LojaController {
     return await this.lojaService.create(createLojaDto);
   }
 
-  @UseGuards(AuthGuard('oauth2'))
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async findAll() {
     return await this.lojaService.findAll();
   }
 
-  @UseGuards(AuthGuard('oauth2'))
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.lojaService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard('oauth2'))
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateLojaDto: UpdateLojaDto) {
     return await this.lojaService.update(+id, updateLojaDto);
   }
 
-  @UseGuards(AuthGuard('oauth2'))
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.lojaService.remove(+id);
