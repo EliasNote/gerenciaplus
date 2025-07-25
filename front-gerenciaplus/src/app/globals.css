@@ -1,26 +1,62 @@
 @import "tailwindcss";
 
+@custom-variant hover (&:hover);
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #f0fff1;
+	--foreground: #171717;
+	--secondary: #004952;
+	--accent: #e2ff53;
+	--black: #171717;
+	--white: #fff;
+
+	--gray-light: #f5f5f5;
+	--gray-medium: #e0e0e0;
+	--gray-dark: #bdbdbd;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* @media (prefers-color-scheme: dark) {
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+	}
+} */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	background: var(--background);
+	color: var(--foreground);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.bg-primary {
+	background: var(--background);
+}
+
+.bg-secondary {
+	background: var(--secondary);
+}
+
+.text-color-primary {
+	color: var(--black);
+}
+
+.border-gray-medium {
+	border: 1px solid var(--gray-medium);
+}
+
+.bg-white-custom {
+	background: var(--white);
+}
+
+.bg-button-custom {
+	background: var(--accent);
+}
+
+.bg-button-custom:hover {
+	background: var(--gray-medium);
 }

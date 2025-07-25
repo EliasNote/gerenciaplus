@@ -9,6 +9,7 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import * as bcrypt from 'bcryptjs';
 import { UsuarioResponseDto } from './dto/response-usuario.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { LoginUsuarioDto } from './dto/login-usuario.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -16,7 +17,7 @@ export class UsuarioService {
     @InjectRepository(Usuario)
     private usuarioRepository: Repository<Usuario>,
     private lojaService: LojaService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   async create(
@@ -30,7 +31,7 @@ export class UsuarioService {
       loja,
     });
     const usuarioSave = await this.usuarioRepository.save(usuario);
-    await this.authService.create(createUsuarioDto)
+    await this.authService.create(createUsuarioDto);
 
     return this.generateUsuarioResponseDto(usuarioSave);
   }
@@ -64,6 +65,10 @@ export class UsuarioService {
 
   async findByEmail(email: string): Promise<Usuario | null> {
     return await this.usuarioRepository.findOne({ where: { email } });
+  }
+
+  login(loginDto: LoginUsuarioDto) {
+    throw new Error('Method not implemented.');
   }
 
   generateUsuarioResponseDto(usuario: Usuario): UsuarioResponseDto {

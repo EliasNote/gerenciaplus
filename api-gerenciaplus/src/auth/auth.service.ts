@@ -6,8 +6,7 @@ import { CreateUsuarioDto } from 'src/usuario/dto/create-usuario.dto';
 export class AuthService {
   private kcAdminClient: KcAdminClient;
 
-  constructor(
-  ) {
+  constructor() {
     this.kcAdminClient = new KcAdminClient({
       baseUrl: process.env.KEYCLOAK_URL,
       realmName: process.env.KEYCLOAK_REALM,
