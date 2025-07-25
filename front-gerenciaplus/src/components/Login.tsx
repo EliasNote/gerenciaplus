@@ -1,7 +1,9 @@
+import { signIn, signOut, useSession } from "next-auth/react";
+
 export default function Home() {
 	return (
 		<section className="flex font-mono justify-center items-center w-screen h-screen bg-primary">
-			<div className="text-color-primary p-[40px] rounded-[10px] shadow-lg bg-white-custom max-w-[380px] w-full">
+			<div className="text-color-primary p-[40px] rounded-[10px] shadow-lg bg-white-custom max-w-[360px] w-full">
 				<h2 className="mb-[20px] text-2xl font-bold text-center">Login</h2>
 				<form className="flex flex-col gap-2">
 					<div className="mb-4">
