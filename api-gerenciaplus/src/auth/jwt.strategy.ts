@@ -14,8 +14,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: process.env.SUPABASE_JWT_SECRET,
     });
   }
-
-  validate(payload: any) {
-    return payload; // ou busque o usuário no banco, se quiser
-  }
 }
