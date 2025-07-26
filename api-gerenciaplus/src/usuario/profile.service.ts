@@ -57,7 +57,7 @@ export class ProfileService {
       nome: profile.nome,
       sobrenome: profile.sobrenome,
       createdAt: profile.createdAt,
-      updatedAt: profile.updatedAt
+      updatedAt: profile.updatedAt,
     };
   }
 }

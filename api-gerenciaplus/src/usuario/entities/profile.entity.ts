@@ -6,12 +6,10 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
 } from 'typeorm';
 import { Loja } from '../../loja/entities/loja.entity';
 @Entity('profiles')
 export class Profile {
-
   @PrimaryColumn('uuid')
   id: string;
 
