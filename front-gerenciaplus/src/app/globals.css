@@ -41,12 +41,24 @@ body {
 	background: var(--secondary);
 }
 
-.text-color-primary {
+.color-black {
 	color: var(--black);
+}
+
+.color-secondary {
+	color: var(--secondary)
 }
 
 .border-gray-medium {
 	border: 1px solid var(--gray-medium);
+}
+
+.border-gray-dark {
+	border: 1px solid var(--gray-dark);
+}
+
+.bg-gray-light {
+	background: var(--gray-light);
 }
 
 .bg-white-custom {
@@ -58,5 +70,9 @@ body {
 }
 
 .bg-button-custom:hover {
+	background: var(--gray-medium);
+}
+
+.bg-button-email:hover {
 	background: var(--gray-medium);
 }

@@ -31,7 +31,7 @@ export default function Login() {
 
     return (
         <section className="flex font-mono justify-center items-center w-screen h-screen bg-primary">
-            <div className="text-color-primary p-[40px] rounded-[10px] shadow-lg bg-white-custom max-w-[360px] w-full">
+            <div className="color-black p-[40px] rounded-[10px] shadow-lg bg-white-custom max-w-[360px] w-full">
                 <h2 className="mb-[20px] text-2xl font-bold text-center">Login</h2>
                 <form className="flex flex-col gap-2" onSubmit={handleLogin}>
                     <div className="mb-4">
