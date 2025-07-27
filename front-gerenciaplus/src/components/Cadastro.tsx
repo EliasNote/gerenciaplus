@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { criarLoja, criarProfile } from "@/services/loja.service";
 import Lottie from "lottie-react";
 import mailAnimation from "@/../public/animation/mail.json";
+import loadingAnimation from "@/../public/animation/Loading.json";
+import successAnimation from "@/../public/animation/Success.json";
 
 export default function Cadastro() {
   const router = useRouter();
@@ -13,7 +15,9 @@ export default function Cadastro() {
 
   const [step, setStep] = useState(1);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showConfirmEmail, setShowConfirmEmail] = useState(false);
+  const [showSuccessIcon, setShowSuccessIcon] = useState(false);
 
   const [enterpriseName, setEnterpriseName] = useState("");
   const [cnpj, setCnpj] = useState("");
@@ -43,9 +47,11 @@ export default function Cadastro() {
   const handleCadastro = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
+    setLoading(true);
 
     if (password !== confirmPassword) {
       setError("As senhas não coincidem.");
+      setLoading(false);
       return;
     }
 
@@ -54,15 +60,11 @@ export default function Cadastro() {
       const loja = await criarLoja(enterpriseName, cnpj);
       lojaId = loja.id;
       if (!lojaId) {
-        setError("Erro ao criar loja: ID não retornado.");
-        return;
+        throw new Error("ID da loja não retornado.");
       }
     } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e.message || "Erro ao criar loja");
-      } else {
-        setError("Erro ao criar loja");
-      }
+      setError(e instanceof Error ? e.message : "Erro ao criar loja");
+      setLoading(false);
       return;
     }
 
@@ -71,39 +73,40 @@ export default function Cadastro() {
       password,
     });
 
+    if (signUpError) {
+      setError(signUpError.message);
+      setLoading(false);
+      return;
+    }
+
     try {
-      const loja = await criarProfile(
+      const profile = await criarProfile(
         data.user!.id,
         username,
         name,
         lastName,
         lojaId
       );
-      lojaId = loja.id;
-      if (!lojaId) {
-        setError("Erro ao criar profile: ID não retornado.");
-        return;
+      if (!profile.id) {
+        throw new Error("ID do perfil não retornado.");
       }
     } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e.message || "Erro ao criar profile");
-      } else {
-        setError("Erro ao criar profile");
-      }
+      setError(e instanceof Error ? e.message : "Erro ao criar perfil");
+      setLoading(false);
       return;
     }
 
-    if (signUpError) {
-      setError(signUpError.message);
-      return;
-    }
-
-    setSuccess(true);
-    setTimeout(() => setShowConfirmEmail(true), 600);
+    setLoading(false);
+    setShowSuccessIcon(true);
+    setTimeout(() => {
+      setShowSuccessIcon(false);
+      setSuccess(true);
+      setShowConfirmEmail(true);
+    }, 2000);
   };
 
   return (
-    <section className="flex font-mono justify-center items-center w-full h-screen bg-primary">
+    <section className="flex font-regular justify-center items-center w-full h-screen bg-primary">
       {success ? (
         <div className="flex flex-col items-center text-center p-8  w-full max-w-[460px] bg-white-custom rounded-[10px] shadow-lg">
           <Lottie
@@ -193,7 +196,12 @@ export default function Cadastro() {
             </form>
           )}
           {step === 2 && (
-            <form className="flex flex-col gap-2" onSubmit={handleCadastro}>
+            <form
+              className={`flex flex-col gap-2 ${
+                loading ? "opacity-60 pointer-events-none" : ""
+              }`}
+              onSubmit={handleCadastro}
+            >
               <div className="mb-4">
                 <label htmlFor="username" className="block mb-1">
                   Nome de Usuário
@@ -207,6 +215,7 @@ export default function Cadastro() {
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="mb-4">
@@ -222,6 +231,7 @@ export default function Cadastro() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="mb-4">
@@ -237,6 +247,7 @@ export default function Cadastro() {
                   required
                   value={lastName}
                   onChange={(e) => setLastname(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="mb-4">
@@ -252,6 +263,7 @@ export default function Cadastro() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="mb-4">
@@ -267,6 +279,7 @@ export default function Cadastro() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               <div className="mb-4">
@@ -282,25 +295,40 @@ export default function Cadastro() {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={loading}
                 />
               </div>
               {error && (
                 <p className="text-red-500 text-sm text-center">{error}</p>
               )}
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className="w-1/2 font-semibold py-2 rounded cursor-pointer bg-gray-300 text-black"
-                  onClick={() => setStep(1)}
-                >
-                  Voltar
-                </button>
-                <button
-                  type="submit"
-                  className="w-1/2 font-semibold py-2 rounded cursor-pointer bg-button-custom"
-                >
-                  Concluir
-                </button>
+              <div className="flex justify-center gap-2">
+                {loading ? (
+                  <Lottie
+                    animationData={loadingAnimation}
+                    className="w-[100px]"
+                  />
+                ) : showSuccessIcon ? (
+                  <Lottie
+                    animationData={successAnimation}
+                    className="w-[100px]"
+                  />
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="w-1/2 font-semibold py-2 rounded cursor-pointer bg-gray-300 text-black"
+                      onClick={() => setStep(1)}
+                    >
+                      Voltar
+                    </button>
+                    <button
+                      type="submit"
+                      className="w-1/2 font-semibold py-2 rounded cursor-pointer bg-button-custom"
+                    >
+                      Concluir
+                    </button>
+                  </>
+                )}
               </div>
             </form>
           )}
