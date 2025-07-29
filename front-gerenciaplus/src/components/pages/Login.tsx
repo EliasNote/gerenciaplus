@@ -64,12 +64,12 @@ export default function Login() {
   };
 
   return (
-    <section className="flex font-regular justify-center items-center w-screen h-screen bg-primary bg-image p-8">
+    <section className="flex font-regular justify-center items-center w-screen h-screen bg-custom bg-image p-8">
       <div className="flex flex-col gap-5 items-center color-black p-[40px] rounded-[10px] shadow-lg bg-white-custom max-w-[360px] w-full">
         <h2 className="text-2xl font-bold text-center">Login</h2>
         <form className="flex flex-col gap-5" onSubmit={handleLogin}>
           <div className="">
-            <label htmlFor="email" className="block mb-1">
+            <label htmlFor="email" className="block mb-1 placeholder-color">
               E-mail
             </label>
             <input
@@ -91,7 +91,7 @@ export default function Login() {
             />
           </div>
           <div className="">
-            <label htmlFor="password" className="block mb-1">
+            <label htmlFor="password" className="block mb-1 placeholder-color">
               Senha
             </label>
             <div className="relative">
@@ -116,10 +116,7 @@ export default function Login() {
                 onClick={() => setShowPassword((prev) => !prev)}
               />
             </div>
-            <Link
-              href="/reset"
-              className="text-[13px] color-secondary font-bold"
-            >
+            <Link href="/reset" className="text-[13px] color-primary font-bold">
               Recuperar senha
             </Link>
           </div>
@@ -133,16 +130,16 @@ export default function Login() {
           )}
           <button
             type="submit"
-            className="w-full font-semibold py-2 rounded cursor-pointer bg-button-custom"
+            className="w-full font-medium py-2 rounded cursor-pointer button-custom"
           >
             Entrar
           </button>
         </form>
-        <p className="text-[13px] color-secondary">
+        <p className="text-[13px]">
           <span className="text-foreground dark:text-white">
             Não possui conta?
           </span>
-          <Link href="/cadastro" className="font-bold ml-1 color-secondary">
+          <Link href="/cadastro" className="font-bold ml-1 color-primary">
             Cadastrar
           </Link>
         </p>

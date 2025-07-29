@@ -3,9 +3,9 @@
 @custom-variant hover (&:hover);
 
 :root {
-  --background: #f0fff1;
+  --background: #caf0f8;
+  --primary: #0466c8;
   --foreground: #171717;
-  --secondary: #004952;
   --accent: #e2ff53;
   --black: #171717;
   --white: #fff;
@@ -13,13 +13,20 @@
   --gray-light: #f5f5f5;
   --gray-medium: #e0e0e0;
   --gray-dark: #bdbdbd;
-  --button-main: #e2ff53;
+
+  /* Botões */
+  --button-main-background: #0466c8;
+  --button-main-color: white;
+  --button-main-background-hover: #253239c5;
   --button-email: #e2ff53;
-  --button-back: #e0e0e0;
+  --button-back-background: #444;
+  --button-back-background-hover: #727272;
   --button-back-text: #171717;
 
   --error-border: #ef4444;
   --error-text: #ef4444;
+
+  --placeholder: #6e6e6e;
 }
 
 @theme inline {
@@ -40,22 +47,28 @@
   }
 
   :root {
-    --background: #0a0a0a;
+    --background: #00171f;
     --foreground: #ededed;
-    --secondary: #00bfae;
     --accent: #e2ff53;
     --black: #ededed;
-    --white: #171717;
+    --white: #0d1b2a;
     --gray-light: #222;
     --gray-medium: #444;
     --gray-dark: #666;
-    --button-main: #004952;
+
+    /* Botões */
+    --button-main-background: #0466c8;
+    --button-main-color: white;
+    --button-main-background-hover: #253239c5;
     --button-email: #004952;
-    --button-back: #444;
+    --button-back-background: #444;
+    --button-back-background-hover: #727272;
     --button-back-text: #ededed;
 
     --error-border: #ef4444;
     --error-text: #ef4444;
+
+    --placeholder: white;
   }
 }
 
@@ -77,23 +90,23 @@ body {
 }
 
 .bg-image {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1920' height='1080' preserveAspectRatio='none' viewBox='0 0 1920 1080'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1047%26quot%3b)' fill='none'%3e%3cpath d='M1297.341%2c1358.407C1385.052%2c1357.408%2c1454.949%2c1291.292%2c1495.579%2c1213.552C1533.069%2c1141.82%2c1529.323%2c1058.561%2c1491.429%2c987.042C1450.64%2c910.059%2c1384.458%2c840.266%2c1297.341%2c839.412C1209.117%2c838.547%2c1138.733%2c905.682%2c1096.544%2c983.169C1056.388%2c1056.922%2c1051.504%2c1144.117%2c1091.125%2c1218.158C1133.163%2c1296.716%2c1208.249%2c1359.422%2c1297.341%2c1358.407' fill='rgba(0%2c 73%2c 82%2c 0.51)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M1239.6606907362145 8.505204294218089L1045.4932661509354 257.02817463662683 1294.0162364933442 451.1955992219059 1488.1836610786233 202.6726288794972z' fill='rgba(0%2c 73%2c 82%2c 0.51)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M27.636613959186377 999.0127633606357L296.65940899845725 1032.0446091224048 329.6912547602263 763.0218140831339 60.668459720955404 729.9899683213648z' fill='rgba(0%2c 73%2c 82%2c 0.51)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M538.281%2c672.451C583.396%2c673.7%2c633.122%2c670.755%2c658.412%2c633.374C686.211%2c592.284%2c685.82%2c536.031%2c658.664%2c494.514C633.544%2c456.11%2c584.109%2c447.33%2c538.281%2c449.712C497.185%2c451.848%2c459.353%2c470.949%2c437.783%2c505.994C415.06%2c542.912%2c406.736%2c589.916%2c429.142%2c627.028C450.971%2c663.183%2c496.063%2c671.282%2c538.281%2c672.451' fill='rgba(0%2c 73%2c 82%2c 0.51)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M308.68 292.4 a319.97 319.97 0 1 0 639.94 0 a319.97 319.97 0 1 0 -639.94 0z' fill='rgba(0%2c 73%2c 82%2c 0.51)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1061.220620564985 558.987807208914L996.6973658725426 406.9805449910753 844.690103654704 471.5037996835176 909.2133583471464 623.5110619013564z' fill='rgba(0%2c 73%2c 82%2c 0.51)' class='triangle-float3'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1047'%3e%3crect width='1920' height='1080' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cstyle%3e %40keyframes float1 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-10px%2c 0)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float1 %7b animation: float1 5s infinite%3b %7d %40keyframes float2 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-5px%2c -5px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float2 %7b animation: float2 4s infinite%3b %7d %40keyframes float3 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(0%2c -10px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float3 %7b animation: float3 6s infinite%3b %7d %3c/style%3e%3c/defs%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1920' height='1080' preserveAspectRatio='none' viewBox='0 0 1920 1080'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1095%26quot%3b)' fill='none'%3e%3cpath d='M163.133%2c904.743C257.274%2c903.17%2c364.416%2c899.41%2c412.059%2c818.199C460.044%2c736.405%2c414.178%2c639.039%2c367.406%2c556.545C319.734%2c472.462%2c259.611%2c385.03%2c163.133%2c379.154C58.493%2c372.781%2c-36.093%2c438.412%2c-89.315%2c528.731C-143.41%2c620.532%2c-160.025%2c738.301%2c-100.631%2c826.766C-45.857%2c908.349%2c64.882%2c906.385%2c163.133%2c904.743' fill='rgba(4%2c 102%2c 200%2c 0.75)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M1533.968%2c352.565C1562.654%2c353.211%2c1588.059%2c335.568%2c1602.581%2c310.821C1617.296%2c285.746%2c1620.701%2c254.704%2c1606.172%2c229.521C1591.636%2c204.326%2c1563.003%2c190.134%2c1533.968%2c191.896C1507.536%2c193.5%2c1488.21%2c214.22%2c1475.496%2c237.449C1463.39%2c259.568%2c1459.085%2c285.368%2c1470.504%2c307.849C1483.065%2c332.578%2c1506.239%2c351.941%2c1533.968%2c352.565' fill='rgba(4%2c 102%2c 200%2c 0.75)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1031.59 91.66 a292.06 292.06 0 1 0 584.12 0 a292.06 292.06 0 1 0 -584.12 0z' fill='rgba(4%2c 102%2c 200%2c 0.75)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M1747.635%2c1009.209C1781.019%2c1006.67%2c1809.339%2c986.261%2c1825.364%2c956.865C1840.673%2c928.781%2c1839.604%2c895.781%2c1824.973%2c867.337C1808.817%2c835.928%2c1782.948%2c806.508%2c1747.635%2c805.75C1711.348%2c804.971%2c1683.337%2c832.972%2c1664.323%2c863.888C1644.091%2c896.785%2c1627.115%2c936.976%2c1646.323%2c970.481C1665.596%2c1004.098%2c1708.997%2c1012.147%2c1747.635%2c1009.209' fill='rgba(4%2c 102%2c 200%2c 0.75)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M253.72 973.84 a233.51 233.51 0 1 0 467.02 0 a233.51 233.51 0 1 0 -467.02 0z' fill='rgba(4%2c 102%2c 200%2c 0.75)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M923.4689687968075 230.00574352688812L960.187723132113 461.83883432840344 1192.0208139336282 425.12007999309793 1155.3020595983228 193.28698919158268z' fill='rgba(4%2c 102%2c 200%2c 0.75)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M1800.394%2c701.502C1922.383%2c708.356%2c2020.239%2c610.065%2c2078.734%2c502.797C2134.485%2c400.562%2c2150.105%2c274.453%2c2086.445%2c176.946C2027.23%2c86.248%2c1908.708%2c75.626%2c1800.394%2c76.47C1694.1%2c77.298%2c1574.983%2c89.216%2c1521.959%2c181.343C1469.011%2c273.337%2c1521.333%2c380.714%2c1571.425%2c474.293C1625.812%2c575.895%2c1685.332%2c695.037%2c1800.394%2c701.502' fill='rgba(4%2c 102%2c 200%2c 0.75)' class='triangle-float1'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1095'%3e%3crect width='1920' height='1080' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cstyle%3e %40keyframes float1 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-10px%2c 0)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float1 %7b animation: float1 5s infinite%3b %7d %40keyframes float2 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-5px%2c -5px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float2 %7b animation: float2 4s infinite%3b %7d %40keyframes float3 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(0%2c -10px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float3 %7b animation: float3 6s infinite%3b %7d %3c/style%3e%3c/defs%3e%3c/svg%3e");
 }
 
-.bg-primary {
+.bg-custom {
   background-color: var(--background);
 }
 
-.bg-secondary {
-  background-color: var(--secondary);
+.bg-primary {
+  background-color: var(--primary);
 }
 
 .color-black {
   color: var(--black);
 }
 
-.color-secondary {
-  color: var(--secondary);
+.color-primary {
+  color: var(--primary);
 }
 
 .border-gray-medium {
@@ -112,12 +125,14 @@ body {
   background-color: var(--white);
 }
 
-.bg-button-custom {
-  background-color: var(--button-main);
+/* Classes utilitárias para botões e cores */
+.button-custom {
+  background-color: var(--button-main-background);
+  color: var(--button-main-color);
 }
 
-.bg-button-custom:hover {
-  background-color: var(--gray-medium);
+.button-custom:hover {
+  background-color: var(--button-main-background-hover);
 }
 
 .bg-button-email {
@@ -128,14 +143,12 @@ body {
   background-color: var(--gray-medium);
 }
 
-.bg-button-back {
-  background-color: var(--button-back);
+.button-back {
+  background-color: var(--button-back-background);
   color: var(--button-back-text);
 }
 
-.border-error {
-  border: 1px solid var(--error-border);
-}
-.text-error {
-  color: var(--error-text);
+.button-back:hover {
+  background-color: var(--button-back-background-hover);
+  color: var(--button-back-text);
 }

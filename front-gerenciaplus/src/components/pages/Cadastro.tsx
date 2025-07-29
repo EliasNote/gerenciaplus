@@ -146,7 +146,7 @@ export default function Cadastro() {
   };
 
   return (
-    <section className="flex font-regular justify-center items-center w-full h-screen bg-primary bg-image">
+    <section className="flex font-regular justify-center items-center w-full h-screen bg-custom bg-image">
       {success ? (
         <div className="flex flex-col items-center text-center p-8  w-full max-w-[460px] bg-white-custom rounded-[10px] shadow-lg">
           <Lottie
@@ -160,7 +160,7 @@ export default function Cadastro() {
             }`}
           >
             <div className="mb-[20px]">
-              <h3 className="text-xl font-bold color-secondary mb-2">
+              <h3 className="text-xl font-bold color-primary mb-2">
                 Cadastro realizado com sucesso!
               </h3>
               <p>Verifique seu e-mail para confirmar o cadastro.</p>
@@ -180,14 +180,14 @@ export default function Cadastro() {
             <div
               className={`h-[6px] w-md rounded transition-all duration-500 ${
                 step === 1
-                  ? "bg-secondary scale-x-100"
+                  ? "bg-primary scale-x-100"
                   : "bg-gray-light scale-x-100"
               }`}
             ></div>
             <div
               className={`h-[6px] w-md rounded transition-all duration-500 ${
                 step === 2
-                  ? "bg-secondary scale-x-100"
+                  ? "bg-primary scale-x-100"
                   : "bg-gray-light scale-x-100"
               }`}
             ></div>
@@ -195,7 +195,10 @@ export default function Cadastro() {
           {step === 1 && (
             <form className="flex flex-col gap-5" onSubmit={handleNext}>
               <div className="">
-                <label htmlFor="enterpriseName" className="block mb-1">
+                <label
+                  htmlFor="enterpriseName"
+                  className="block mb-1 placeholder-color"
+                >
                   Nome da empresa
                 </label>
                 <input
@@ -211,7 +214,7 @@ export default function Cadastro() {
                 />
               </div>
               <div className="">
-                <label htmlFor="cnpj" className="block mb-1">
+                <label htmlFor="cnpj" className="block mb-1 placeholder-color">
                   CNPJ
                 </label>
                 <input
@@ -231,7 +234,7 @@ export default function Cadastro() {
               )}
               <button
                 type="submit"
-                className="w-full font-semibold py-2 rounded cursor-pointer bg-button-custom"
+                className="w-full font-medium py-2 rounded cursor-pointer button-custom"
               >
                 Próximo
               </button>
@@ -245,7 +248,10 @@ export default function Cadastro() {
               onSubmit={handleCadastro}
             >
               <div className="">
-                <label htmlFor="username" className="block mb-1">
+                <label
+                  htmlFor="username"
+                  className="block mb-1 placeholder-color"
+                >
                   Nome de Usuário
                 </label>
                 <input
@@ -264,7 +270,7 @@ export default function Cadastro() {
                 />
               </div>
               <div className="">
-                <label htmlFor="name" className="block mb-1">
+                <label htmlFor="name" className="block mb-1 placeholder-color">
                   Nome
                 </label>
                 <input
@@ -283,7 +289,10 @@ export default function Cadastro() {
                 />
               </div>
               <div className="">
-                <label htmlFor="lastName" className="block mb-1">
+                <label
+                  htmlFor="lastName"
+                  className="block mb-1 placeholder-color"
+                >
                   Sobrenome
                 </label>
                 <input
@@ -304,7 +313,7 @@ export default function Cadastro() {
                 />
               </div>
               <div className="">
-                <label htmlFor="email" className="block mb-1">
+                <label htmlFor="email" className="block mb-1 placeholder-color">
                   E-mail
                 </label>
                 <input
@@ -323,7 +332,10 @@ export default function Cadastro() {
                 />
               </div>
               <div className="">
-                <label htmlFor="password" className="block mb-1">
+                <label
+                  htmlFor="password"
+                  className="block mb-1 placeholder-color"
+                >
                   Senha
                 </label>
                 <div className="relative">
@@ -373,14 +385,14 @@ export default function Cadastro() {
                   <>
                     <button
                       type="button"
-                      className="w-1/2 font-semibold py-2 rounded cursor-pointer bg-button-back"
+                      className="w-1/2 font-medium py-2 rounded cursor-pointer button-back"
                       onClick={() => setStep(1)}
                     >
                       Voltar
                     </button>
                     <button
                       type="submit"
-                      className="w-1/2 font-semibold py-2 rounded cursor-pointer bg-button-custom"
+                      className="w-1/2 font-medium py-2 rounded cursor-pointer button-custom"
                     >
                       Concluir
                     </button>
@@ -389,11 +401,11 @@ export default function Cadastro() {
               </div>
             </form>
           )}
-          <p className="text-[13px] color-secondary m-auto">
+          <p className="text-[13px] m-auto">
             <span className="text-foreground dark:text-white">
               Já possui conta?
             </span>
-            <Link href="/login" className="font-bold ml-1">
+            <Link href="/login" className="font-bold ml-1 color-primary">
               Login
             </Link>
           </p>
