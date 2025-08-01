@@ -1,7 +1,5 @@
-export default function Dashboard() {
-  return (
-    <section className="font-regular">
-      <h2>Dashboard</h2>
-    </section>
-  );
+import Dashboard from "@/components/pages/Dashboard";
+
+export default function DashboardPage() {
+	return <Dashboard />;
 }
