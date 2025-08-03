@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 import { criarLoja, criarProfile } from "@/services/loja.service";
 import Lottie from "lottie-react";
 import mailAnimation from "@/../public/animation/mail.json";
+import darkMailAnimation from "@/../public/animation/dark-mail.json";
 import loadingAnimation from "@/../public/animation/Loading.json";
 import successAnimation from "@/../public/animation/Success.json";
 import Link from "next/link";
 import PasswordEyeIcon from "../ui/PasswordEyeIcon";
 import ValidationBox from "@/components/ui/ValidationBox";
 import { Input } from "../ui/Input";
+import { useTheme } from "@/hooks/useTheme";
 
 function getStep1Errors(enterpriseName: string, cnpj: string) {
 	const errors: string[] = [];
@@ -40,6 +42,7 @@ function getStep2Errors(
 export default function Cadastro() {
 	const router = useRouter();
 	const supabase = createClient();
+	const { theme } = useTheme();
 
 	const [step, setStep] = useState(1);
 	const [success, setSuccess] = useState(false);
@@ -149,9 +152,9 @@ export default function Cadastro() {
 	return (
 		<section className="flex font-regular justify-center items-center w-full h-screen bg-blizzard-blue bg-image">
 			{success ? (
-				<div className="flex flex-col items-center text-center p-8  w-full max-w-[460px] bg-white rounded-[10px] shadow-lg">
+				<div className="flex flex-col items-center text-center p-8  w-full max-w-[460px] bg-white text-eerie-black rounded-[10px] shadow-lg">
 					<Lottie
-						animationData={mailAnimation}
+						animationData={theme === "dark" ? darkMailAnimation : mailAnimation}
 						loop={false}
 						className="w-[280px]"
 					/>
@@ -167,7 +170,7 @@ export default function Cadastro() {
 							<p>Verifique seu e-mail para confirmar o cadastro.</p>
 						</div>
 						<button
-							className="w-1/2 font-semibold py-2 rounded cursor-pointer border-silver bg-mine-shaft hover:bg-gainsboro"
+							className="w-1/2 font-semibold py-2 rounded cursor-pointer bg-mine-shaft text-static-white hover:bg-dove-gray"
 							onClick={handleClose}
 						>
 							Ir para Login

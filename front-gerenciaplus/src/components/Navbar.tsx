@@ -33,7 +33,7 @@ export default function Navbar() {
 				>
 					{text}
 					<span
-						className={`absolute bottom-0 left-0 h-[4px] w-0 bg-white duration-200 ${
+						className={`absolute bottom-0 left-0 h-[4px] w-0 bg-static-white duration-200 ${
 							isActive ? "w-full" : "w-0"
 						} group-hover:w-full`}
 					></span>
@@ -43,7 +43,7 @@ export default function Navbar() {
 	};
 
 	return (
-		<nav className="flex flex-row items-center w-full bg-sapphire h-[70px] sticky px-[20px] justify-between text-white">
+		<nav className="flex flex-row items-center w-full bg-sapphire h-[70px] sticky px-[20px] justify-between text-static-white z-50">
 			<Image src="/logo.svg" alt="Logo" width={40} height={40} />
 			<div className="flex flex-row gap-[10px]">
 				<NavButton text="Dashboard" href="/dashboard" />
