@@ -11,6 +11,7 @@ import successAnimation from "@/../public/animation/Success.json";
 import Link from "next/link";
 import PasswordEyeIcon from "../ui/PasswordEyeIcon";
 import ValidationBox from "@/components/ui/ValidationBox";
+import { Input } from "../ui/Input";
 
 function getStep1Errors(enterpriseName: string, cnpj: string) {
 	const errors: string[] = [];
@@ -146,9 +147,9 @@ export default function Cadastro() {
 	};
 
 	return (
-		<section className="flex font-regular justify-center items-center w-full h-screen bg-custom bg-image">
+		<section className="flex font-regular justify-center items-center w-full h-screen bg-blizzard-blue bg-image">
 			{success ? (
-				<div className="flex flex-col items-center text-center p-8  w-full max-w-[460px] bg-white-custom rounded-[10px] shadow-lg">
+				<div className="flex flex-col items-center text-center p-8  w-full max-w-[460px] bg-white rounded-[10px] shadow-lg">
 					<Lottie
 						animationData={mailAnimation}
 						loop={false}
@@ -160,13 +161,13 @@ export default function Cadastro() {
 						}`}
 					>
 						<div className="mb-[20px]">
-							<h3 className="text-xl font-bold color-primary mb-2">
+							<h3 className="text-xl font-bold text-sapphire mb-2">
 								Cadastro realizado com sucesso!
 							</h3>
 							<p>Verifique seu e-mail para confirmar o cadastro.</p>
 						</div>
 						<button
-							className="w-1/2 font-semibold py-2 rounded cursor-pointer border-gray-dark bg-button-email"
+							className="w-1/2 font-semibold py-2 rounded cursor-pointer border-silver bg-mine-shaft hover:bg-gainsboro"
 							onClick={handleClose}
 						>
 							Ir para Login
@@ -174,21 +175,21 @@ export default function Cadastro() {
 					</div>
 				</div>
 			) : (
-				<div className="flex flex-col gap-5 color-black p-[40px] rounded-[10px] shadow-lg bg-white-custom max-w-[360px] w-full">
+				<div className="flex flex-col gap-5 text-eerie-black p-[40px] rounded-[10px] shadow-lg bg-white max-w-[360px] w-full">
 					<h2 className="text-2xl font-bold text-center">Cadastro</h2>
 					<div className="w-full flex flex-row gap-4">
 						<div
 							className={`h-[6px] w-md rounded transition-all duration-500 ${
 								step === 1
-									? "bg-primary scale-x-100"
-									: "bg-gray-light scale-x-100"
+									? "bg-sapphire scale-x-100"
+									: "bg-white-smoke scale-x-100"
 							}`}
 						></div>
 						<div
 							className={`h-[6px] w-md rounded transition-all duration-500 ${
 								step === 2
-									? "bg-primary scale-x-100"
-									: "bg-gray-light scale-x-100"
+									? "bg-sapphire scale-x-100"
+									: "bg-white-smoke scale-x-100"
 							}`}
 						></div>
 					</div>
@@ -201,11 +202,11 @@ export default function Cadastro() {
 								>
 									Nome da empresa
 								</label>
-								<input
+								<Input
 									type="text"
 									id="enterpriseName"
 									name="enterpriseName"
-									className={`w-full px-3 py-2 rounded border-gray-medium ${
+									className={`${
 										error && !enterpriseName ? "border-error" : ""
 									}`}
 									placeholder="Digite o nome da empresa"
@@ -217,13 +218,11 @@ export default function Cadastro() {
 								<label htmlFor="cnpj" className="block mb-1 placeholder-color">
 									CNPJ
 								</label>
-								<input
+								<Input
 									type="text"
 									id="cnpj"
 									name="cnpj"
-									className={`w-full px-3 py-2 rounded border-gray-medium ${
-										error && !cnpj ? "border-error" : ""
-									}`}
+									className={`${error && !cnpj ? "border-error" : ""}`}
 									placeholder="Digite o CNPJ"
 									value={cnpj}
 									onChange={(e) => setCnpj(e.target.value)}
@@ -234,7 +233,7 @@ export default function Cadastro() {
 							)}
 							<button
 								type="submit"
-								className="w-full font-medium py-2 rounded cursor-pointer button-custom"
+								className="w-full font-medium py-2 rounded cursor-pointer bg-sapphire text-static-white hover:bg-gun-powder-transparent"
 							>
 								Próximo
 							</button>
@@ -254,11 +253,11 @@ export default function Cadastro() {
 								>
 									Nome de Usuário
 								</label>
-								<input
+								<Input
 									type="text"
 									id="username"
 									name="username"
-									className={`w-full px-3 py-2 rounded border-gray-medium ${
+									className={`${
 										fieldErrors.find((e) => e.toLowerCase().includes("usuário"))
 											? "border-error"
 											: ""
@@ -273,11 +272,11 @@ export default function Cadastro() {
 								<label htmlFor="name" className="block mb-1 placeholder-color">
 									Nome
 								</label>
-								<input
+								<Input
 									type="text"
 									id="name"
 									name="name"
-									className={`w-full px-3 py-2 rounded border-gray-medium ${
+									className={`${
 										fieldErrors.find((e) => e.toLowerCase().includes("nome."))
 											? "border-error"
 											: ""
@@ -295,11 +294,11 @@ export default function Cadastro() {
 								>
 									Sobrenome
 								</label>
-								<input
+								<Input
 									type="text"
 									id="lastName"
 									name="lastName"
-									className={`w-full px-3 py-2 rounded border-gray-medium ${
+									className={`${
 										fieldErrors.find((e) =>
 											e.toLowerCase().includes("sobrenome")
 										)
@@ -316,11 +315,11 @@ export default function Cadastro() {
 								<label htmlFor="email" className="block mb-1 placeholder-color">
 									E-mail
 								</label>
-								<input
+								<Input
 									type="email"
 									id="email"
 									name="email"
-									className={`w-full px-3 py-2 rounded border-gray-medium ${
+									className={`${
 										fieldErrors.find((e) => e.toLowerCase().includes("e-mail"))
 											? "border-error"
 											: ""
@@ -339,11 +338,11 @@ export default function Cadastro() {
 									Senha
 								</label>
 								<div className="relative">
-									<input
+									<Input
 										type={showPassword ? "text" : "password"}
 										id="password"
 										name="password"
-										className={`w-full px-3 py-2 rounded border-gray-medium pr-10 ${
+										className={`pr-10 ${
 											fieldErrors.find((e) => e.toLowerCase().includes("senha"))
 												? "border-error"
 												: ""
@@ -385,14 +384,14 @@ export default function Cadastro() {
 									<>
 										<button
 											type="button"
-											className="w-1/2 font-medium py-2 rounded cursor-pointer button-back"
+											className="w-1/2 font-medium py-2 rounded cursor-pointer bg-mine-shaft text-static-white hover:bg-gun-powder-transparent"
 											onClick={() => setStep(1)}
 										>
 											Voltar
 										</button>
 										<button
 											type="submit"
-											className="w-1/2 font-medium py-2 rounded cursor-pointer button-custom"
+											className="w-1/2 font-medium py-2 rounded cursor-pointer bg-sapphire text-static-white hover:bg-gun-powder-transparent"
 										>
 											Concluir
 										</button>
@@ -402,10 +401,8 @@ export default function Cadastro() {
 						</form>
 					)}
 					<p className="text-[13px] m-auto">
-						<span className="text-foreground dark:text-white">
-							Já possui conta?
-						</span>
-						<Link href="/login" className="font-bold ml-1 color-primary">
+						<span className="text-eerie-black">Já possui conta?</span>
+						<Link href="/login" className="font-bold ml-1 text-sapphire">
 							Login
 						</Link>
 					</p>

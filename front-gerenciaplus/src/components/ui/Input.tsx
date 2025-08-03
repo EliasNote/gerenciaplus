@@ -4,6 +4,6 @@ export const Input = ({
 }: React.InputHTMLAttributes<HTMLInputElement>) => (
 	<input
 		{...props}
-		className={`w-full px-3 py-2 rounded border-gray-medium ${className}`}
+		className={`w-full px-3 py-2 rounded border border-gainsboro ${className}`}
 	/>
 );

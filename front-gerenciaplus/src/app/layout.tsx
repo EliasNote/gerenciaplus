@@ -22,7 +22,7 @@ export default function RootLayout({
 		<html lang="ptbr" suppressHydrationWarning>
 			<body
 				suppressHydrationWarning
-				className={`${roboto.variable} antialiased`}
+				className={`${roboto.variable} antialiased bg-blizzard-blue text-eerie-black`}
 			>
 				{children}
 			</body>

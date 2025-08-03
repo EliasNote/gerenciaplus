@@ -69,8 +69,8 @@ export default function Login() {
 	};
 
 	return (
-		<section className="flex font-regular justify-center items-center w-screen h-screen bg-custom bg-image p-8">
-			<div className="flex flex-col gap-5 items-center color-black p-[40px] rounded-[10px] shadow-lg bg-white-custom max-w-[360px] w-full">
+		<section className="flex font-regular justify-center items-center w-screen h-screen bg-blizzard-blue bg-image p-8">
+			<div className="flex flex-col gap-5 items-center text-eerie-black p-[40px] rounded-[10px] shadow-lg bg-white max-w-[360px] w-full">
 				<h2 className="text-2xl font-bold text-center">Login</h2>
 				<form className="flex flex-col gap-5" onSubmit={handleLogin}>
 					<div className="">
@@ -121,7 +121,7 @@ export default function Login() {
 								onClick={() => setShowPassword((prev) => !prev)}
 							/>
 						</div>
-						<Link href="/reset" className="text-[13px] color-primary font-bold">
+						<Link href="/reset" className="text-[13px] text-sapphire font-bold">
 							Recuperar senha
 						</Link>
 					</div>
@@ -135,16 +135,14 @@ export default function Login() {
 					)}
 					<button
 						type="submit"
-						className="w-full font-medium py-2 rounded cursor-pointer button-custom"
+						className="w-full font-medium py-2 rounded cursor-pointer bg-sapphire text-static-white hover:bg-gun-powder-transparent"
 					>
 						Entrar
 					</button>
 				</form>
 				<p className="text-[13px]">
-					<span className="text-foreground dark:text-white">
-						Não possui conta?
-					</span>
-					<Link href="/cadastro" className="font-bold ml-1 color-primary">
+					<span className="text-eerie-black">Não possui conta?</span>
+					<Link href="/cadastro" className="font-bold ml-1 text-sapphire">
 						Cadastrar
 					</Link>
 				</p>
