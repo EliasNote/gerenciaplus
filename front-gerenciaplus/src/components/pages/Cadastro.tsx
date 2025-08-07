@@ -12,8 +12,8 @@ import successAnimation from "@/../public/animation/Success.json";
 import Link from "next/link";
 import PasswordEyeIcon from "../ui/PasswordEyeIcon";
 import ValidationBox from "@/components/ui/ValidationBox";
-import { Input } from "../ui/Input";
-import { useTheme } from "@/hooks/useTheme";
+import { CustomInput } from "../ui/CustomInput";
+import { useSystemTheme } from "@/hooks/useSystemTheme";
 
 function getStep1Errors(enterpriseName: string, cnpj: string) {
 	const errors: string[] = [];
@@ -42,7 +42,7 @@ function getStep2Errors(
 export default function Cadastro() {
 	const router = useRouter();
 	const supabase = createClient();
-	const { theme } = useTheme();
+	const { isDark } = useSystemTheme();
 
 	const [step, setStep] = useState(1);
 	const [success, setSuccess] = useState(false);
@@ -154,7 +154,7 @@ export default function Cadastro() {
 			{success ? (
 				<div className="flex flex-col items-center text-center p-8  w-full max-w-[460px] bg-white text-eerie-black rounded-[10px] shadow-lg">
 					<Lottie
-						animationData={theme === "dark" ? darkMailAnimation : mailAnimation}
+						animationData={isDark ? darkMailAnimation : mailAnimation}
 						loop={false}
 						className="w-[280px]"
 					/>
@@ -205,7 +205,7 @@ export default function Cadastro() {
 								>
 									Nome da empresa
 								</label>
-								<Input
+								<CustomInput
 									type="text"
 									id="enterpriseName"
 									name="enterpriseName"
@@ -221,7 +221,7 @@ export default function Cadastro() {
 								<label htmlFor="cnpj" className="block mb-1 placeholder-color">
 									CNPJ
 								</label>
-								<Input
+								<CustomInput
 									type="text"
 									id="cnpj"
 									name="cnpj"
@@ -256,7 +256,7 @@ export default function Cadastro() {
 								>
 									Nome de Usuário
 								</label>
-								<Input
+								<CustomInput
 									type="text"
 									id="username"
 									name="username"
@@ -275,7 +275,7 @@ export default function Cadastro() {
 								<label htmlFor="name" className="block mb-1 placeholder-color">
 									Nome
 								</label>
-								<Input
+								<CustomInput
 									type="text"
 									id="name"
 									name="name"
@@ -297,7 +297,7 @@ export default function Cadastro() {
 								>
 									Sobrenome
 								</label>
-								<Input
+								<CustomInput
 									type="text"
 									id="lastName"
 									name="lastName"
@@ -318,7 +318,7 @@ export default function Cadastro() {
 								<label htmlFor="email" className="block mb-1 placeholder-color">
 									E-mail
 								</label>
-								<Input
+								<CustomInput
 									type="email"
 									id="email"
 									name="email"
@@ -341,7 +341,7 @@ export default function Cadastro() {
 									Senha
 								</label>
 								<div className="relative">
-									<Input
+									<CustomInput
 										type={showPassword ? "text" : "password"}
 										id="password"
 										name="password"

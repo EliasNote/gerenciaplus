@@ -1,277 +1,273 @@
 "use client";
-import { useState } from "react";
 import Navbar from "../Navbar";
-import {
-	Table,
-	TableHeader,
-	TableColumn,
-	TableBody,
-	TableRow,
-	TableCell,
-} from "@heroui/react";
+import { DataTable } from "@/app/inventory/data-table";
+import { columns, Produto } from "@/app/inventory/columns";
 
-const columns = [
-	{ name: "ID", uid: "id", sortable: true },
-	{ name: "NAME", uid: "name", sortable: true },
-	{ name: "AGE", uid: "age", sortable: true },
-	{ name: "ROLE", uid: "role", sortable: true },
-	{ name: "TEAM", uid: "team" },
-	{ name: "EMAIL", uid: "email" },
-	{ name: "ACTIONS", uid: "actions" },
-];
-
-const users = [
-	{
-		id: 1,
-		name: "Tony Reichert",
-		role: "CEO",
-		team: "Management",
-		status: "active",
-		age: "29",
-		avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-		email: "tony.reichert@example.com",
-	},
-	{
-		id: 2,
-		name: "Zoey Lang",
-		role: "Tech Lead",
-		team: "Development",
-		status: "paused",
-		age: "25",
-		avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-		email: "zoey.lang@example.com",
-	},
-	{
-		id: 3,
-		name: "Jane Fisher",
-		role: "Sr. Dev",
-		team: "Development",
-		status: "active",
-		age: "22",
-		avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-		email: "jane.fisher@example.com",
-	},
-	{
-		id: 4,
-		name: "William Howard",
-		role: "C.M.",
-		team: "Marketing",
-		status: "vacation",
-		age: "28",
-		avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-		email: "william.howard@example.com",
-	},
-	{
-		id: 5,
-		name: "Kristen Copper",
-		role: "S. Manager",
-		team: "Sales",
-		status: "active",
-		age: "24",
-		avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-		email: "kristen.cooper@example.com",
-	},
-	{
-		id: 6,
-		name: "Brian Kim",
-		role: "P. Manager",
-		team: "Management",
-		age: "29",
-		avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-		email: "brian.kim@example.com",
-		status: "active",
-	},
-	{
-		id: 7,
-		name: "Michael Hunt",
-		role: "Designer",
-		team: "Design",
-		status: "paused",
-		age: "27",
-		avatar: "https://i.pravatar.cc/150?u=a042581f4e29027007d",
-		email: "michael.hunt@example.com",
-	},
-	{
-		id: 8,
-		name: "Samantha Brooks",
-		role: "HR Manager",
-		team: "HR",
-		status: "active",
-		age: "31",
-		avatar: "https://i.pravatar.cc/150?u=a042581f4e27027008d",
-		email: "samantha.brooks@example.com",
-	},
-	{
-		id: 9,
-		name: "Frank Harrison",
-		role: "F. Manager",
-		team: "Finance",
-		status: "vacation",
-		age: "33",
-		avatar: "https://i.pravatar.cc/150?img=4",
-		email: "frank.harrison@example.com",
-	},
-	{
-		id: 10,
-		name: "Emma Adams",
-		role: "Ops Manager",
-		team: "Operations",
-		status: "active",
-		age: "35",
-		avatar: "https://i.pravatar.cc/150?img=5",
-		email: "emma.adams@example.com",
-	},
-];
-
-const PlusIcon = ({ size = 24, width, height, ...props }) => {
-	return (
-		<svg
-			aria-hidden="true"
-			fill="none"
-			focusable="false"
-			height={size || height}
-			role="presentation"
-			viewBox="0 0 24 24"
-			width={size || width}
-			{...props}
-		>
-			<g
-				fill="none"
-				stroke="currentColor"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth={1.5}
-			>
-				<path d="M6 12h12" />
-				<path d="M12 18V6" />
-			</g>
-		</svg>
-	);
-};
-
-const VerticalDotsIcon = ({ size = 24, width, height, ...props }) => {
-	return (
-		<svg
-			aria-hidden="true"
-			fill="none"
-			focusable="false"
-			height={size || height}
-			role="presentation"
-			viewBox="0 0 24 24"
-			width={size || width}
-			{...props}
-		>
-			<path
-				d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
-				fill="currentColor"
-			/>
-		</svg>
-	);
-};
-
-const SearchIcon = (props) => {
-	return (
-		<svg
-			aria-hidden="true"
-			fill="none"
-			focusable="false"
-			height="1em"
-			role="presentation"
-			viewBox="0 0 24 24"
-			width="1em"
-			{...props}
-		>
-			<path
-				d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-				stroke="currentColor"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth="2"
-			/>
-			<path
-				d="M22 22L20 20"
-				stroke="currentColor"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth="2"
-			/>
-		</svg>
-	);
-};
-
-const ChevronDownIcon = ({ strokeWidth = 1.5, ...otherProps }) => {
-	return (
-		<svg
-			aria-hidden="true"
-			fill="none"
-			focusable="false"
-			height="1em"
-			role="presentation"
-			viewBox="0 0 24 24"
-			width="1em"
-			{...otherProps}
-		>
-			<path
-				d="m19.92 8.95-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"
-				stroke="currentColor"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeMiterlimit={10}
-				strokeWidth={strokeWidth}
-			/>
-		</svg>
-	);
-};
-
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "actions"];
+function getData(): Produto[] {
+	return [
+		{
+			id: "1a2b3c4d-5e6f",
+			nome: "Notebook Dell Inspiron",
+			sku: "NB-DELL-001",
+			descricao: 'Notebook Dell Inspiron 15.6", i5, 8GB RAM, 256GB SSD',
+			preco_unitario: 2800.0,
+			preco_venda: 3499.9,
+			quantidade: 12,
+			unidade_medida: "unid",
+			quantidade_reposicao: 5,
+			loja: { id: "loja-1", nome: "Matriz" },
+		},
+		{
+			id: "2a3b4c5d-6e7f",
+			nome: 'Monitor LG 24"',
+			sku: "MON-LG-024",
+			descricao: "Monitor LG 24 polegadas Full HD IPS",
+			preco_unitario: 650.0,
+			preco_venda: 899.9,
+			quantidade: 8,
+			unidade_medida: "unid",
+			quantidade_reposicao: 3,
+			loja: { id: "loja-1", nome: "Matriz" },
+		},
+		{
+			id: "3a4b5c6d-7e8f",
+			nome: "Mouse Logitech G403",
+			sku: "MOU-LOG-403",
+			descricao: "Mouse gamer Logitech G403 Hero",
+			preco_unitario: 180.0,
+			preco_venda: 249.9,
+			quantidade: 25,
+			unidade_medida: "unid",
+			quantidade_reposicao: 10,
+			loja: { id: "loja-2", nome: "Filial SP" },
+		},
+		{
+			id: "4a5b6c7d-8e9f",
+			nome: "Teclado Mecânico Redragon",
+			sku: "TEC-RED-K552",
+			descricao: "Teclado mecânico Redragon Kumara K552 RGB",
+			preco_unitario: 210.0,
+			preco_venda: 299.9,
+			quantidade: 15,
+			unidade_medida: "unid",
+			quantidade_reposicao: 5,
+			loja: { id: "loja-2", nome: "Filial SP" },
+		},
+		{
+			id: "5a6b7c8d-9e0f",
+			nome: "SSD Kingston 480GB",
+			sku: "SSD-KIN-480",
+			descricao: "SSD Kingston A400 480GB SATA 3",
+			preco_unitario: 240.0,
+			preco_venda: 329.9,
+			quantidade: 30,
+			unidade_medida: "unid",
+			quantidade_reposicao: 8,
+			loja: { id: "loja-3", nome: "Filial RJ" },
+		},
+		{
+			id: "6a7b8c9d-0e1f",
+			nome: "Memória RAM Corsair 8GB",
+			sku: "RAM-COR-008",
+			descricao: "Memória RAM Corsair Vengeance 8GB DDR4 3200MHz",
+			preco_unitario: 180.0,
+			preco_venda: 249.9,
+			quantidade: 20,
+			unidade_medida: "unid",
+			quantidade_reposicao: 6,
+			loja: { id: "loja-1", nome: "Matriz" },
+		},
+		{
+			id: "7a8b9c0d-1e2f",
+			nome: "Gabinete Corsair iCUE 220T",
+			sku: "GAB-COR-220T",
+			descricao: "Gabinete Corsair iCUE 220T RGB Airflow",
+			preco_unitario: 450.0,
+			preco_venda: 599.9,
+			quantidade: 7,
+			unidade_medida: "unid",
+			quantidade_reposicao: 3,
+			loja: { id: "loja-3", nome: "Filial RJ" },
+		},
+		{
+			id: "8a9b0c1d-2e3f",
+			nome: "Placa de Vídeo GTX 1660",
+			sku: "GPU-GTX-1660",
+			descricao: "Placa de Vídeo NVIDIA GeForce GTX 1660 6GB",
+			preco_unitario: 1500.0,
+			preco_venda: 1899.9,
+			quantidade: 5,
+			unidade_medida: "unid",
+			quantidade_reposicao: 2,
+			loja: { id: "loja-2", nome: "Filial SP" },
+		},
+		{
+			id: "9a0b1c2d-3e4f",
+			nome: "Headset HyperX Cloud II",
+			sku: "HEA-HYP-CL2",
+			descricao: "Headset Gamer HyperX Cloud II 7.1",
+			preco_unitario: 420.0,
+			preco_venda: 549.9,
+			quantidade: 18,
+			unidade_medida: "unid",
+			quantidade_reposicao: 5,
+			loja: { id: "loja-1", nome: "Matriz" },
+		},
+		{
+			id: "0a1b2c3d-4e5f",
+			nome: "Cabo HDMI 2.0 2m",
+			sku: "CAB-HDM-2M",
+			descricao: "Cabo HDMI 2.0 4K 2 metros",
+			preco_unitario: 15.0,
+			preco_venda: 29.9,
+			quantidade: 45,
+			unidade_medida: "unid",
+			quantidade_reposicao: 15,
+			loja: { id: "loja-3", nome: "Filial RJ" },
+		},
+		// Novos produtos fictícios
+		{
+			id: "10b2c3d4-5e6f",
+			nome: "Impressora HP DeskJet 2774",
+			sku: "IMP-HP-2774",
+			descricao: "Impressora multifuncional HP DeskJet 2774 Wi-Fi",
+			preco_unitario: 320.0,
+			preco_venda: 399.9,
+			quantidade: 9,
+			unidade_medida: "unid",
+			quantidade_reposicao: 2,
+			loja: { id: "loja-1", nome: "Matriz" },
+		},
+		{
+			id: "11c3d4e5-6f7g",
+			nome: "Webcam Logitech C920",
+			sku: "WEB-LOG-C920",
+			descricao: "Webcam Logitech C920 Full HD",
+			preco_unitario: 350.0,
+			preco_venda: 499.9,
+			quantidade: 14,
+			unidade_medida: "unid",
+			quantidade_reposicao: 4,
+			loja: { id: "loja-2", nome: "Filial SP" },
+		},
+		{
+			id: "12d4e5f6-7g8h",
+			nome: "Fonte Corsair 650W",
+			sku: "FON-COR-650W",
+			descricao: "Fonte Corsair CV650 650W 80 Plus Bronze",
+			preco_unitario: 320.0,
+			preco_venda: 429.9,
+			quantidade: 11,
+			unidade_medida: "unid",
+			quantidade_reposicao: 3,
+			loja: { id: "loja-3", nome: "Filial RJ" },
+		},
+		{
+			id: "13e5f6g7-8h9i",
+			nome: "Cooler Master Hyper 212",
+			sku: "COO-MAS-212",
+			descricao: "Cooler Master Hyper 212 EVO",
+			preco_unitario: 120.0,
+			preco_venda: 179.9,
+			quantidade: 16,
+			unidade_medida: "unid",
+			quantidade_reposicao: 5,
+			loja: { id: "loja-1", nome: "Matriz" },
+		},
+		{
+			id: "14f6g7h8-9i0j",
+			nome: "Pendrive Sandisk 32GB",
+			sku: "PEN-SAN-32GB",
+			descricao: "Pendrive Sandisk Cruzer Blade 32GB USB 2.0",
+			preco_unitario: 25.0,
+			preco_venda: 39.9,
+			quantidade: 60,
+			unidade_medida: "unid",
+			quantidade_reposicao: 20,
+			loja: { id: "loja-2", nome: "Filial SP" },
+		},
+		{
+			id: "15g7h8i9-0j1k",
+			nome: "Roteador TP-Link Archer C6",
+			sku: "ROT-TPL-C6",
+			descricao: "Roteador TP-Link Archer C6 AC1200",
+			preco_unitario: 180.0,
+			preco_venda: 249.9,
+			quantidade: 13,
+			unidade_medida: "unid",
+			quantidade_reposicao: 4,
+			loja: { id: "loja-3", nome: "Filial RJ" },
+		},
+		{
+			id: "16h8i9j0-1k2l",
+			nome: "Estabilizador SMS 300VA",
+			sku: "EST-SMS-300VA",
+			descricao: "Estabilizador SMS 300VA Bivolt",
+			preco_unitario: 90.0,
+			preco_venda: 129.9,
+			quantidade: 22,
+			unidade_medida: "unid",
+			quantidade_reposicao: 7,
+			loja: { id: "loja-1", nome: "Matriz" },
+		},
+		{
+			id: "17i9j0k1-2l3m",
+			nome: "Suporte Monitor Articulado",
+			sku: "SUP-MON-ART",
+			descricao: 'Suporte Articulado para Monitor 13-32"',
+			preco_unitario: 70.0,
+			preco_venda: 119.9,
+			quantidade: 19,
+			unidade_medida: "unid",
+			quantidade_reposicao: 6,
+			loja: { id: "loja-2", nome: "Filial SP" },
+		},
+		{
+			id: "18j0k1l2-3m4n",
+			nome: "Cadeira Gamer ThunderX3",
+			sku: "CAD-GAM-TX3",
+			descricao: "Cadeira Gamer ThunderX3 EC3",
+			preco_unitario: 650.0,
+			preco_venda: 899.9,
+			quantidade: 6,
+			unidade_medida: "unid",
+			quantidade_reposicao: 2,
+			loja: { id: "loja-3", nome: "Filial RJ" },
+		},
+		{
+			id: "19k1l2m3-4n5o",
+			nome: "Hub USB 4 portas",
+			sku: "HUB-USB-4P",
+			descricao: "Hub USB 2.0 4 portas Multilaser",
+			preco_unitario: 30.0,
+			preco_venda: 49.9,
+			quantidade: 35,
+			unidade_medida: "unid",
+			quantidade_reposicao: 10,
+			loja: { id: "loja-1", nome: "Matriz" },
+		},
+		{
+			id: "20l2m3n4-5o6p",
+			nome: "Adaptador HDMI para VGA",
+			sku: "ADA-HDM-VGA",
+			descricao: "Adaptador HDMI para VGA com áudio",
+			preco_unitario: 25.0,
+			preco_venda: 39.9,
+			quantidade: 28,
+			unidade_medida: "unid",
+			quantidade_reposicao: 8,
+			loja: { id: "loja-2", nome: "Filial SP" },
+		},
+	];
+}
 
 export default function Invetory() {
-	const [filterValue, setFilterValue] = useState("");
-	const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-	const [visibleColumns, setVisibleColumns] = useState(
-		new Set(INITIAL_VISIBLE_COLUMNS)
-	);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
-	const [sortDescriptor, setSortDescriptor] = useState({
-		column: "age",
-		direction: "ascending",
-	});
-	const [page, setPage] = useState(1);
-
-	const pages = Math.ceil(users.length / rowsPerPage);
+	const data = getData();
 
 	return (
-		<>
+		<section className="h-screen bg-white">
 			<Navbar />
-			<Table aria-label="Example static collection table">
-				<TableHeader>
-					<TableColumn>NAME</TableColumn>
-					<TableColumn>ROLE</TableColumn>
-					<TableColumn>STATUS</TableColumn>
-				</TableHeader>
-				<TableBody>
-					<TableRow key="1">
-						<TableCell>Tony Reichert</TableCell>
-						<TableCell>CEO</TableCell>
-						<TableCell>Active</TableCell>
-					</TableRow>
-					<TableRow key="2">
-						<TableCell>Zoey Lang</TableCell>
-						<TableCell>Technical Lead</TableCell>
-						<TableCell>Paused</TableCell>
-					</TableRow>
-					<TableRow key="3">
-						<TableCell>Jane Fisher</TableCell>
-						<TableCell>Senior Developer</TableCell>
-						<TableCell>Active</TableCell>
-					</TableRow>
-					<TableRow key="4">
-						<TableCell>William Howard</TableCell>
-						<TableCell>Community Manager</TableCell>
-						<TableCell>Vacation</TableCell>
-					</TableRow>
-				</TableBody>
-			</Table>
-		</>
+			<DataTable columns={columns} data={data} />
+		</section>
 	);
 }

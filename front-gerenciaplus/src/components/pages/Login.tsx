@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { createClient } from "@/lib/supabase-browser";
 import Link from "next/link";
 import PasswordEyeIcon from "../ui/PasswordEyeIcon";
 import ValidationBox from "@/components/ui/ValidationBox";
 import { useRouter } from "next/navigation";
-import { Input } from "../ui/Input";
+import { CustomInput } from "../ui/CustomInput";
 
 function getLoginErrors(email: string, password: string) {
 	const errors: string[] = [];
@@ -77,13 +77,15 @@ export default function Login() {
 						<label htmlFor="email" className="block mb-1 placeholder-color">
 							E-mail
 						</label>
-						<Input
+						<CustomInput
 							type="email"
 							id="email"
 							name="email"
 							placeholder="Digite seu email"
 							value={email}
-							onChange={(e) => setEmail(e.target.value)}
+							onChange={(e: { target: { value: SetStateAction<string> } }) =>
+								setEmail(e.target.value)
+							}
 							className={`${
 								fieldErrors.find((e) => e.toLowerCase().includes("e-mail")) ||
 								(error &&
@@ -100,13 +102,15 @@ export default function Login() {
 							Senha
 						</label>
 						<div className="relative">
-							<Input
+							<CustomInput
 								type={showPassword ? "text" : "password"}
 								id="password"
 								name="password"
 								placeholder="Digite sua senha"
 								value={password}
-								onChange={(e) => setPassword(e.target.value)}
+								onChange={(e: { target: { value: SetStateAction<string> } }) =>
+									setPassword(e.target.value)
+								}
 								className={`pr-10 ${
 									fieldErrors.find((e) => e.toLowerCase().includes("senha")) ||
 									(error &&

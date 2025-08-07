@@ -75,25 +75,25 @@ export default function Navbar() {
 						}`}
 					/>
 					<div
-						className={`flex flex-col gap-1 items-baseline absolute top-full translate-y-[20px] w-[160px] right-[-20px] rounded-[3px] mt-1 shadow-md origin-top duration-200 ${
+						className={`text-[15px] flex flex-col gap-1 items-baseline absolute top-full translate-y-[20px] w-[160px] right-[-20px] rounded-[3px] mt-1 shadow-md origin-top duration-200 ${
 							configOpen ? "scale-y-100" : "scale-y-0"
 						} bg-sapphire`}
 					>
-						<button className="cursor-pointer p-4 flex flex-row gap-2 hover:bg-[#0080ff] w-full">
+						<button className="cursor-pointer p-[14px] flex flex-row gap-2 hover:bg-[#0080ff] w-full size">
 							<Image
 								src="/gear.svg"
 								alt="Configurações"
-								width={25}
-								height={25}
+								width={22}
+								height={22}
 							/>
 							Configurações
 						</button>
 						<hr className="border-t border-[#6194c7] w-full m-[-6px]" />
 						<button
 							onClick={logout}
-							className="cursor-pointer p-4 flex flex-row gap-2 hover:bg-red-500 w-full"
+							className="cursor-pointer p-[14px] flex flex-row gap-2 hover:bg-red-500 w-full"
 						>
-							<Image src="/logout.svg" alt="Sair" width={26} height={26} />
+							<Image src="/logout.svg" alt="Sair" width={22} height={22} />
 							Sair
 						</button>
 					</div>

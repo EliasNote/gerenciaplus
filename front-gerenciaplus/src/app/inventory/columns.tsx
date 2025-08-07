@@ -1,0 +1,126 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+
+export type Loja = {
+	id: string;
+	nome: string;
+};
+
+export type Produto = {
+	id: string;
+	nome: string;
+	sku: string;
+	descricao: string;
+	preco_unitario: number;
+	preco_venda: number;
+	quantidade: number;
+	unidade_medida: string;
+	quantidade_reposicao: number;
+	loja: Loja;
+};
+
+export const header = ({ column, name }) => (
+	<Button
+		variant="ghost"
+		onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+	>
+		{name}
+		<ArrowUpDown className="ml-2 h-4 w-4" />
+	</Button>
+);
+
+export const columns: ColumnDef<Produto>[] = [
+	{
+		id: "select",
+		header: ({ table }) => (
+			<Checkbox
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && "indeterminate")
+				}
+				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+				aria-label="Selecionar todos"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value) => row.toggleSelected(!!value)}
+				aria-label="Selecionar linha"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		accessorKey: "nome",
+		header: (props) => header({ ...props, name: "Nome" }),
+	},
+	{
+		accessorKey: "sku",
+		header: (props) => header({ ...props, name: "SKU" }),
+	},
+	{
+		accessorKey: "preco_venda",
+		header: (props) => header({ ...props, name: "Preço de Venda" }),
+		cell: ({ row }) => {
+			const valor = row.getValue("preco_venda") as number;
+			return `R$ ${valor.toFixed(2)}`;
+		},
+	},
+	{
+		accessorKey: "preco_unitario",
+		header: (props) => header({ ...props, name: "Preço Unitário" }),
+		cell: ({ row }) => {
+			const valor = row.getValue("preco_unitario") as number;
+			return `R$ ${valor.toFixed(2)}`;
+		},
+	},
+	{
+		accessorKey: "quantidade",
+		header: (props) => header({ ...props, name: "Quantidade" }),
+	},
+	{
+		accessorKey: "unidade_medida",
+		header: (props) => header({ ...props, name: "Unidade" }),
+	},
+	{
+		id: "actions",
+		cell: ({ row }) => {
+			const produto = row.original;
+
+			return (
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button variant="ghost" className="h-8 w-8 p-0">
+							<span className="sr-only">Open menu</span>
+							<MoreHorizontal className="h-4 w-4" />
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuLabel>Ações</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							onClick={() => navigator.clipboard.writeText(produto.id)}
+						>
+							Editar
+						</DropdownMenuItem>
+						<DropdownMenuItem>Excluir</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			);
+		},
+	},
+];

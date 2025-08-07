@@ -2,7 +2,6 @@ import { useRef, useEffect } from "react";
 import type { LottieRefCurrentProps } from "lottie-react";
 import Lottie from "lottie-react";
 import eyeAnimation from "@/../public/animation/eye.json";
-import { useTheme } from "@/hooks/useTheme";
 
 interface PasswordEyeIconProps {
 	showPassword: boolean;
@@ -16,7 +15,6 @@ export default function PasswordEyeIcon({
 	className = "w-6 h-6",
 }: PasswordEyeIconProps) {
 	const lottieRef = useRef<LottieRefCurrentProps>(null);
-	const { theme } = useTheme();
 
 	useEffect(() => {
 		if (lottieRef.current) {
@@ -47,9 +45,8 @@ export default function PasswordEyeIcon({
 				lottieRef={lottieRef}
 				animationData={eyeAnimation}
 				loop={false}
-				style={theme === "dark" ? { filter: "invert(1)" } : {}}
 				autoplay={false}
-				className={className}
+				className={`${className} + password-eye-icon`}
 			/>
 		</button>
 	);
