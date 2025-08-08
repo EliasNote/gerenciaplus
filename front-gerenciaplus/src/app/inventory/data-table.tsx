@@ -1,5 +1,4 @@
 "use client";
-
 import {
 	ColumnDef,
 	ColumnFiltersState,
@@ -19,6 +18,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import {
 	Table,
@@ -29,7 +29,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { ChevronDown, Filter, Trash2 } from "lucide-react";
 import {
@@ -42,32 +42,95 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import Slider from "@mui/material/Slider";
+import {
+	ColumnFilter,
+	TableAdvancedFilters,
+} from "@/components/inventory/Filters";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 }
 
+const columnLabels: Record<string, string> = {
+	nome: "Nome",
+	sku: "SKU",
+	preco_venda: "Preço de Venda",
+	preco_unitario: "Preço Unitário",
+	quantidade: "Quantidade",
+	quantidade_reposicao: "Quantidade de Reposição",
+	unidade_medida: "Unidade",
+	loja_nome: "Fornecedor",
+};
+
 export function DataTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
-	const [sorting, setSorting] = useState<SortingState>([]);
-	const [globalFilter, setGlobalFilter] = useState("");
-	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-	const [rowSelection, setRowSelection] = useState({});
-	const [min, setMin] = useState("");
-	const [max, setMax] = useState("");
-	const [unidade, setUnidade] = useState("");
+	const precoVendaMin = 0;
 	const precoVendaMax = Math.max(
 		...data.map((item) => Number(item.preco_venda) || 0)
 	);
+
+	const precoUnitarioMin = 0;
 	const precoUnitarioMax = Math.max(
 		...data.map((item) => Number(item.preco_unitario) || 0)
 	);
 
-	const table = useReactTable({
+	const [sorting, setSorting] = useState<SortingState>([]);
+	const [globalFilter, setGlobalFilter] = useState("");
+	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const [rowSelection, setRowSelection] = useState({});
+	const [minVenda, setMinVenda] = useState<number>(0);
+	const [maxVenda, setMaxVenda] = useState<number>(precoVendaMax);
+	const [minUnitario, setMinUnitario] = useState<number>(0);
+	const [maxUnitario, setMaxUnitario] = useState<number>(precoUnitarioMax);
+	const [unidadesSelecionadas, setUnidadesSelecionadas] = useState<string[]>(
+		[]
+	);
+
+	const [tempMinVenda, setTempMinVenda] = useState<number>(0);
+	const [tempMaxVenda, setTempMaxVenda] = useState<number>(precoVendaMax);
+	const [tempMinUnitario, setTempMinUnitario] = useState<number>(0);
+	const [tempMaxUnitario, setTempMaxUnitario] =
+		useState<number>(precoUnitarioMax);
+	const [tempUnidadesSelecionadas, setTempUnidadesSelecionadas] = useState<
+		string[]
+	>([]);
+
+	const [dialogOpen, setDialogOpen] = useState(false);
+
+	const filteredData = useMemo(() => {
+		return data.filter((item: any) => {
+			// Filtro de preço de venda
+			const precoVendaOk =
+				Number(item.preco_venda) >= minVenda &&
+				Number(item.preco_venda) <= maxVenda;
+
+			// Filtro de preço unitário
+			const precoUnitarioOk =
+				Number(item.preco_unitario) >= minUnitario &&
+				Number(item.preco_unitario) <= maxUnitario;
+
+			// Filtro de unidades
+			const unidadeOk =
+				unidadesSelecionadas.length === 0 ||
+				unidadesSelecionadas.includes(item.unidade_medida);
+
+			// Item passa no filtro apenas se atender a todos os critérios
+			return precoVendaOk && precoUnitarioOk && unidadeOk;
+		});
+	}, [
 		data,
+		minVenda,
+		maxVenda,
+		minUnitario,
+		maxUnitario,
+		unidadesSelecionadas,
+	]);
+
+	const table = useReactTable({
+		data: filteredData,
 		columns,
 		onGlobalFilterChange: setGlobalFilter,
 		getFilteredRowModel: getFilteredRowModel(),
@@ -85,6 +148,34 @@ export function DataTable<TData, TValue>({
 		},
 	});
 
+	const unSetFilters = () => {
+		setMinVenda(0);
+		setMaxVenda(precoVendaMax);
+		setMinUnitario(0);
+		setMaxUnitario(precoUnitarioMax);
+		setUnidadesSelecionadas([]);
+
+		setTempMinVenda(0);
+		setTempMaxVenda(precoVendaMax);
+		setTempMinUnitario(0);
+		setTempMaxUnitario(precoUnitarioMax);
+		setTempUnidadesSelecionadas([]);
+	};
+
+	const setFilters = () => {
+		setMinVenda(tempMinVenda);
+		setMaxVenda(tempMaxVenda);
+		setMinUnitario(tempMinUnitario);
+		setMaxUnitario(tempMaxUnitario);
+		setUnidadesSelecionadas(tempUnidadesSelecionadas);
+
+		setDialogOpen(false);
+	};
+
+	const unidades = Array.from(
+		new Set(data.map((item) => item.unidade_medida))
+	).filter(Boolean);
+
 	const selectedRows = table.getSelectedRowModel().rows;
 
 	function handleShowSelected() {
@@ -94,134 +185,50 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div className="flex flex-col max-w-[1366px] bg-card rounded border m-auto mt-20">
-			<div className="flex items-center max-[550px]:flex-col p-2">
+			<div className="flex items-center justify-between max-[570px]:items-start max-[570px]:flex-col gap-2 p-2">
 				<Input
 					placeholder="Pesquise em todas as colunas"
 					value={globalFilter}
 					onChange={(e) => setGlobalFilter(e.target.value)}
-					className="max-w-sm"
+					className="max-w-[240px] text-[14px]"
 				/>
-				<div className="flex items-center gap-2 ml-auto max-[550px]:mr-auto">
-					<DropdownMenu>
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button variant="outline" size="lg">
-									Filtros
-									<Filter className="ml-2 h-4 w-4" />
-								</Button>
-							</DialogTrigger>
-							<DialogContent>
-								<DialogHeader>
-									<DialogTitle>Filtros Avançados</DialogTitle>
-								</DialogHeader>
-								<div className="flex flex-col gap-3">
-									<label className="font-medium text-sm">Valor</label>
-									<Slider
-										value={[Number(min) || 0, Number(max) || precoVendaMax]}
-										min={0}
-										max={precoVendaMax}
-										onChange={(_, newValue) => {
-											if (Array.isArray(newValue)) {
-												setMin(String(newValue[0]));
-												setMax(String(newValue[1]));
-											}
-										}}
-										valueLabelDisplay="auto"
-									/>
-
-									<div className="flex justify-between text-xs text-muted-foreground">
-										<span>Mín: {min || 0}</span>
-										<span>Máx: {max || precoVendaMax}</span>
-									</div>
-									<select
-										value={unidade}
-										onChange={(e) => setUnidade(e.target.value)}
-										className="border rounded px-2 py-1"
-									>
-										<option value="">Todas unidades</option>
-										<option value="unid">Unidade</option>
-										<option value="kg">Kg</option>
-									</select>
-									{/* Adicione outros filtros aqui */}
-								</div>
-								<DialogFooter>
-									<Button
-										variant="secondary"
-										onClick={() => {
-											setMin("");
-											setMax("");
-											setUnidade("");
-										}}
-									>
-										Limpar filtros
-									</Button>
-									<Button
-										onClick={() => {
-											/* aplicar filtros */
-										}}
-									>
-										Aplicar
-									</Button>
-								</DialogFooter>
-							</DialogContent>
-						</Dialog>
-						<DropdownMenuContent align="end" className="min-w-[220px] p-2">
-							<div className="flex flex-col gap-2">
-								<Input
-									type="number"
-									placeholder="Valor mínimo"
-									value={min}
-									onChange={(e) => setMin(e.target.value)}
-									className="max-w-full"
-								/>
-								<Input
-									type="number"
-									placeholder="Valor máximo"
-									value={max}
-									onChange={(e) => setMax(e.target.value)}
-									className="max-w-full"
-								/>
-								<select
-									value={unidade}
-									onChange={(e) => setUnidade(e.target.value)}
-									className="border rounded px-2 py-1"
-								>
-									<option value="">Todas unidades</option>
-									<option value="unid">Unidade</option>
-									<option value="kg">Kg</option>
-									{/* ...outras opções */}
-								</select>
-								{/* Adicione outros filtros aqui */}
-							</div>
-						</DropdownMenuContent>
-					</DropdownMenu>
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline" size="lg">
-								Colunas
-								<ChevronDown className=" h-4 w-4" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							{table
-								.getAllColumns()
-								.filter((column) => column.getCanHide())
-								.map((column) => {
-									return (
-										<DropdownMenuCheckboxItem
-											key={column.id}
-											className="capitalize"
-											checked={column.getIsVisible()}
-											onCheckedChange={(value) =>
-												column.toggleVisibility(!!value)
-											}
-										>
-											{column.id}
-										</DropdownMenuCheckboxItem>
-									);
-								})}
-						</DropdownMenuContent>
-					</DropdownMenu>
+				<div className="flex flex-wrap items-center max-[570px]:items-start gap-2 max-[570px]:mr-auto">
+					<div>
+						<TableAdvancedFilters
+							dialogOpen={dialogOpen}
+							setDialogOpen={setDialogOpen}
+							venda={{
+								min: tempMinVenda,
+								max: tempMaxVenda,
+								setMin: setTempMinVenda,
+								setMax: setTempMaxVenda,
+								minLimit: precoVendaMin,
+								maxLimit: precoVendaMax,
+							}}
+							unitario={{
+								min: tempMinUnitario,
+								max: tempMaxUnitario,
+								setMin: setTempMinUnitario,
+								setMax: setTempMaxUnitario,
+								minLimit: precoUnitarioMin,
+								maxLimit: precoUnitarioMax,
+							}}
+							unidades={unidades}
+							tempUnidadesSelecionadas={tempUnidadesSelecionadas}
+							setTempUnidadesSelecionadas={setTempUnidadesSelecionadas}
+							onApply={setFilters}
+							onClear={unSetFilters}
+						/>
+						<Button
+							variant="outline"
+							size="lg"
+							onClick={() => setDialogOpen(true)}
+						>
+							Filtros
+							<Filter className="ml-2 h-4 w-4" />
+						</Button>
+					</div>
+					<ColumnFilter table={table} columnLabels={columnLabels} />
 					<Button
 						variant="destructive"
 						size="lg"

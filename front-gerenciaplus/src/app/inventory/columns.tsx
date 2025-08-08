@@ -74,7 +74,7 @@ export const columns: ColumnDef<Produto>[] = [
 	},
 	{
 		accessorKey: "preco_venda",
-		header: (props) => header({ ...props, name: "Preço de Venda" }),
+		header: (props) => header({ ...props, name: "P. Venda" }),
 		cell: ({ row }) => {
 			const valor = row.getValue("preco_venda") as number;
 			return `R$ ${valor.toFixed(2)}`;
@@ -82,7 +82,7 @@ export const columns: ColumnDef<Produto>[] = [
 	},
 	{
 		accessorKey: "preco_unitario",
-		header: (props) => header({ ...props, name: "Preço Unitário" }),
+		header: (props) => header({ ...props, name: "P. Unit." }),
 		cell: ({ row }) => {
 			const valor = row.getValue("preco_unitario") as number;
 			return `R$ ${valor.toFixed(2)}`;
@@ -90,11 +90,19 @@ export const columns: ColumnDef<Produto>[] = [
 	},
 	{
 		accessorKey: "quantidade",
-		header: (props) => header({ ...props, name: "Quantidade" }),
+		header: (props) => header({ ...props, name: "Quant." }),
+	},
+	{
+		accessorKey: "quantidade_reposicao",
+		header: (props) => header({ ...props, name: "Qtd. Rep." }),
 	},
 	{
 		accessorKey: "unidade_medida",
-		header: (props) => header({ ...props, name: "Unidade" }),
+		header: (props) => header({ ...props, name: "Unid." }),
+	},
+	{
+		accessorKey: "loja.nome",
+		header: (props) => header({ ...props, name: "Forn." }),
 	},
 	{
 		id: "actions",
@@ -114,10 +122,13 @@ export const columns: ColumnDef<Produto>[] = [
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={() => navigator.clipboard.writeText(produto.id)}
+							className="cursor-pointer"
 						>
 							Editar
 						</DropdownMenuItem>
-						<DropdownMenuItem>Excluir</DropdownMenuItem>
+						<DropdownMenuItem className="cursor-pointer">
+							Excluir
+						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);
