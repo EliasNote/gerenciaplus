@@ -10,7 +10,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 export type Loja = {
@@ -31,7 +31,13 @@ export type Produto = {
 	loja: Loja;
 };
 
-export const header = ({ column, name }) => (
+export const header = ({
+	column,
+	name,
+}: {
+	column: HeaderContext<Produto, unknown>["column"];
+	name: string;
+}) => (
 	<Button
 		variant="ghost"
 		onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}

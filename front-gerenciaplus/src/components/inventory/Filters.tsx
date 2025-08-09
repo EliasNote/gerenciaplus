@@ -16,29 +16,67 @@ import {
 } from "../ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { Table } from "@tanstack/react-table";
+import { useState } from "react";
 
-interface PriceProps {
-	min: number;
-	max: number;
-	setMin: (value: number) => void;
-	setMax: (value: number) => void;
-	minLimit: number;
-	maxLimit: number;
+export interface DefinitiveFilters {
+	minVenda: number;
+	maxVenda: number;
+	minUnitario: number;
+	maxUnitario: number;
+	unidadesSelecionadas: string[];
 }
 
-interface TableAdvancedFilters {
+interface TableAdvancedFiltersProps {
 	dialogOpen: boolean;
 	setDialogOpen: (open: boolean) => void;
-	venda: PriceProps;
-	unitario: PriceProps;
 	unidades: string[];
-	tempUnidadesSelecionadas: string[];
-	setTempUnidadesSelecionadas: React.Dispatch<React.SetStateAction<string[]>>;
-	onApply: () => void;
-	onClear: () => void;
+	definitive: DefinitiveFilters;
+	setDefinitive: React.Dispatch<React.SetStateAction<DefinitiveFilters>>;
+	precoVendaMin: number;
+	precoVendaMax: number;
+	precoUnitarioMin: number;
+	precoUnitarioMax: number;
 }
 
-export function TableAdvancedFilters(props: TableAdvancedFilters) {
+export function TableAdvancedFilters(props: TableAdvancedFiltersProps) {
+	const [tempMinVenda, setTempMinVenda] = useState(props.definitive.minVenda);
+	const [tempMaxVenda, setTempMaxVenda] = useState(props.definitive.maxVenda);
+	const [tempMinUnitario, setTempMinUnitario] = useState(
+		props.definitive.minUnitario
+	);
+	const [tempMaxUnitario, setTempMaxUnitario] = useState(
+		props.definitive.maxUnitario
+	);
+	const [tempUnidadesSelecionadas, setTempUnidadesSelecionadas] = useState<
+		string[]
+	>(props.definitive.unidadesSelecionadas);
+
+	function onClear() {
+		props.setDefinitive({
+			minVenda: props.precoVendaMin,
+			maxVenda: props.precoVendaMax,
+			minUnitario: props.precoUnitarioMin,
+			maxUnitario: props.precoUnitarioMax,
+			unidadesSelecionadas: [],
+		});
+		setTempMinVenda(props.precoVendaMin);
+		setTempMaxVenda(props.precoVendaMax);
+		setTempMinUnitario(props.precoUnitarioMin);
+		setTempMaxUnitario(props.precoUnitarioMax);
+		setTempUnidadesSelecionadas([]);
+	}
+
+	function onApply() {
+		props.setDefinitive({
+			minVenda: tempMinVenda,
+			maxVenda: tempMaxVenda,
+			minUnitario: tempMinUnitario,
+			maxUnitario: tempMaxUnitario,
+			unidadesSelecionadas: [...tempUnidadesSelecionadas],
+		});
+		props.setDialogOpen(false);
+	}
+
 	return (
 		<Dialog open={props.dialogOpen} onOpenChange={props.setDialogOpen}>
 			<DialogContent>
@@ -46,44 +84,41 @@ export function TableAdvancedFilters(props: TableAdvancedFilters) {
 					<DialogTitle>Filtros Avançados</DialogTitle>
 				</DialogHeader>
 				<div className="flex flex-col gap-3">
-					{/* Preço Venda */}
 					<RangeSliderFilter
 						label={"Preço Venda"}
-						min={props.venda.minLimit}
-						max={props.venda.maxLimit}
-						value={[props.venda.min, props.venda.max]}
+						min={props.precoVendaMin}
+						max={props.precoVendaMax}
+						value={[tempMinVenda, tempMaxVenda]}
 						onChange={([min, max]) => {
-							props.venda.setMin(min);
-							props.venda.setMax(max);
+							setTempMinVenda(min);
+							setTempMaxVenda(max);
 						}}
 						minInputId={"venda-min-input"}
 						maxInputId={"venda-max-input"}
 					/>
 					<hr />
-					{/* Preço Unitário */}
 					<RangeSliderFilter
 						label={"Preço Unitário"}
-						min={props.unitario.minLimit}
-						max={props.unitario.maxLimit}
-						value={[props.unitario.min, props.unitario.max]}
+						min={props.precoUnitarioMin}
+						max={props.precoUnitarioMax}
+						value={[tempMinUnitario, tempMaxUnitario]}
 						onChange={([min, max]) => {
-							props.unitario.setMin(min);
-							props.unitario.setMax(max);
+							setTempMinUnitario(min);
+							setTempMaxUnitario(max);
 						}}
 						minInputId={"unitario-min-input"}
 						maxInputId={"unitario-max-input"}
 					/>
 					<hr />
-					{/* Unidades */}
 					<div>
 						<label className="font-medium text-sm">Unidades</label>
 						<div className="grid grid-cols-2 gap-x-4 gap-y-1">
 							{props.unidades.map((item) => (
 								<label key={item} className="flex items-center gap-1 text-sm">
 									<Checkbox
-										checked={props.tempUnidadesSelecionadas.includes(item)}
+										checked={tempUnidadesSelecionadas.includes(item)}
 										onCheckedChange={(checked) => {
-											props.setTempUnidadesSelecionadas((prev) =>
+											setTempUnidadesSelecionadas((prev) =>
 												checked
 													? [...prev, item]
 													: prev.filter((u) => u !== item)
@@ -97,10 +132,10 @@ export function TableAdvancedFilters(props: TableAdvancedFilters) {
 					</div>
 				</div>
 				<DialogFooter>
-					<Button variant="secondary" onClick={props.onClear}>
+					<Button variant="secondary" onClick={onClear}>
 						Limpar filtros
 					</Button>
-					<Button onClick={props.onApply}>Aplicar</Button>
+					<Button onClick={onApply}>Aplicar</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

@@ -125,7 +125,6 @@ function getData(): Produto[] {
 			quantidade_reposicao: 15,
 			loja: { id: "loja-3", nome: "Filial RJ" },
 		},
-		// Novos produtos fictícios
 		{
 			id: "10b2c3d4-5e6f",
 			nome: "Impressora HP DeskJet 2774",
