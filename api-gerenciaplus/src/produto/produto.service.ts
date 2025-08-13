@@ -64,6 +64,6 @@ export class ProdutoService {
   async remove(id: string) {
     const produto = await this.produtoRepository.delete(id);
     if (produto.affected === 0)
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('Produto não encontrado');
   }
 }

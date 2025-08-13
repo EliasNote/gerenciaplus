@@ -1,12 +1,12 @@
-import { IsString, IsOptional, IsEmail } from 'class-validator';
+import { IsString, IsOptional, IsEmail, Matches } from 'class-validator';
 
 export class CreateFornecedorDto {
   @IsString()
   nome: string;
 
   @IsString()
-  @IsOptional()
-  cnpj?: string;
+  @Matches(/^\d{14}$/)
+  readonly cnpj: string;
 
   @IsEmail()
   @IsOptional()

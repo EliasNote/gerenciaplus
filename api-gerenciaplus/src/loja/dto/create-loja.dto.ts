@@ -1,9 +1,10 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsString, Matches } from 'class-validator';
 
 export class CreateLojaDto {
   @IsString()
   readonly nome_fantasia: string;
 
-  @IsNumber()
-  readonly cnpj: number;
+  @IsString()
+  @Matches(/^\d{14}$/)
+  readonly cnpj: string;
 }

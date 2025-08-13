@@ -1,9 +1,6 @@
 import { IsString, IsUUID } from 'class-validator';
 
 export class CreateProfileDto {
-  @IsUUID()
-  readonly id: string;
-
   @IsString()
   readonly username: string;
 

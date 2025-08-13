@@ -9,8 +9,8 @@ export class Loja {
   @Column()
   nome_fantasia: string;
 
-  @Column({ type: 'bigint' })
-  cnpj: number;
+  @Column({ type: 'text', unique: true })
+  cnpj: string;
 
   @Column({ type: 'date' })
   data_cadastro: Date = new Date();
