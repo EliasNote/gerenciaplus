@@ -3,8 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProdutoModule } from './produto/produto.module';
 import { LojaModule } from './loja/loja.module';
-import { ProfileModule } from './usuario/profile.module';
+import { ProfileModule } from './profile/profile.module';
 import { AuthModule } from './auth/auth.module';
+import { FornecedorModule } from './fornecedor/fornecedor.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
     LojaModule,
     ProfileModule,
     AuthModule,
+    FornecedorModule,
   ],
 })
 export class AppModule {}

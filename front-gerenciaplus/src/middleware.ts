@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const protectedRoutes = ["/dashboard", "/finances", "/inventory"];
-const authRoutes = ["/login", "/cadastro", "/reset"];
 
 export function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
@@ -12,14 +11,6 @@ export function middleware(request: NextRequest) {
 		(cookie) =>
 			cookie.name.startsWith("sb-") && cookie.name.includes("auth-token")
 	);
-
-	if (
-		authRoutes.some((route) => pathname.startsWith(route)) &&
-		hasSupabaseSession
-	) {
-		const dashboardUrl = new URL("/dashboard", request.url);
-		return NextResponse.redirect(dashboardUrl);
-	}
 
 	if (
 		protectedRoutes.some((route) => pathname.startsWith(route)) &&

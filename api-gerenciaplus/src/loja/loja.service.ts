@@ -21,7 +21,7 @@ export class LojaService {
     return await this.lojaRepository.find();
   }
 
-  async findOne(id: number): Promise<Loja> {
+  async findOne(id: string): Promise<Loja> {
     const loja = await this.lojaRepository.findOneBy({ id });
     if (!loja) {
       throw new NotFoundException(`Loja com ID ${id} não encontrada`);
@@ -29,12 +29,12 @@ export class LojaService {
     return loja;
   }
 
-  async update(id: number, updateLojaDto: UpdateLojaDto): Promise<Loja> {
+  async update(id: string, updateLojaDto: UpdateLojaDto): Promise<Loja> {
     await this.lojaRepository.update(id, updateLojaDto);
     return await this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const result = await this.lojaRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Loja com ID ${id} não encontrada`);

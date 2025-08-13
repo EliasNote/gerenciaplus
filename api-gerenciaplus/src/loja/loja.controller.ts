@@ -31,18 +31,18 @@ export class LojaController {
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.lojaService.findOne(+id);
+    return await this.lojaService.findOne(id);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateLojaDto: UpdateLojaDto) {
-    return await this.lojaService.update(+id, updateLojaDto);
+    return await this.lojaService.update(id, updateLojaDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.lojaService.remove(+id);
+    return await this.lojaService.remove(id);
   }
 }

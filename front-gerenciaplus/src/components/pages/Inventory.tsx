@@ -1,272 +1,30 @@
 "use client";
+import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import { DataTable } from "@/app/inventory/data-table";
+import { buscarTodosProdutos } from "@/services/loja.service";
 import { columns, Produto } from "@/app/inventory/columns";
 
-function getData(): Produto[] {
-	return [
-		{
-			id: "1a2b3c4d-5e6f",
-			nome: "Notebook Dell Inspiron",
-			sku: "NB-DELL-001",
-			descricao: 'Notebook Dell Inspiron 15.6", i5, 8GB RAM, 256GB SSD',
-			preco_unitario: 2800.0,
-			preco_venda: 3499.9,
-			quantidade: 12,
-			unidade_medida: "unid",
-			quantidade_reposicao: 5,
-			loja: { id: "loja-1", nome: "Matriz" },
-		},
-		{
-			id: "2a3b4c5d-6e7f",
-			nome: 'Monitor LG 24"',
-			sku: "MON-LG-024",
-			descricao: "Monitor LG 24 polegadas Full HD IPS",
-			preco_unitario: 650.0,
-			preco_venda: 899.9,
-			quantidade: 8,
-			unidade_medida: "unida",
-			quantidade_reposicao: 3,
-			loja: { id: "loja-1", nome: "Matriz" },
-		},
-		{
-			id: "3a4b5c6d-7e8f",
-			nome: "Mouse Logitech G403",
-			sku: "MOU-LOG-403",
-			descricao: "Mouse gamer Logitech G403 Hero",
-			preco_unitario: 180.0,
-			preco_venda: 249.9,
-			quantidade: 25,
-			unidade_medida: "unide",
-			quantidade_reposicao: 10,
-			loja: { id: "loja-2", nome: "Filial SP" },
-		},
-		{
-			id: "4a5b6c7d-8e9f",
-			nome: "Teclado Mecânico Redragon",
-			sku: "TEC-RED-K552",
-			descricao: "Teclado mecânico Redragon Kumara K552 RGB",
-			preco_unitario: 210.0,
-			preco_venda: 299.9,
-			quantidade: 15,
-			unidade_medida: "unid",
-			quantidade_reposicao: 5,
-			loja: { id: "loja-2", nome: "Filial SP" },
-		},
-		{
-			id: "5a6b7c8d-9e0f",
-			nome: "SSD Kingston 480GB",
-			sku: "SSD-KIN-480",
-			descricao: "SSD Kingston A400 480GB SATA 3",
-			preco_unitario: 240.0,
-			preco_venda: 329.9,
-			quantidade: 30,
-			unidade_medida: "unid",
-			quantidade_reposicao: 8,
-			loja: { id: "loja-3", nome: "Filial RJ" },
-		},
-		{
-			id: "6a7b8c9d-0e1f",
-			nome: "Memória RAM Corsair 8GB",
-			sku: "RAM-COR-008",
-			descricao: "Memória RAM Corsair Vengeance 8GB DDR4 3200MHz",
-			preco_unitario: 180.0,
-			preco_venda: 249.9,
-			quantidade: 20,
-			unidade_medida: "unid",
-			quantidade_reposicao: 6,
-			loja: { id: "loja-1", nome: "Matriz" },
-		},
-		{
-			id: "7a8b9c0d-1e2f",
-			nome: "Gabinete Corsair iCUE 220T",
-			sku: "GAB-COR-220T",
-			descricao: "Gabinete Corsair iCUE 220T RGB Airflow",
-			preco_unitario: 450.0,
-			preco_venda: 599.9,
-			quantidade: 7,
-			unidade_medida: "unid",
-			quantidade_reposicao: 3,
-			loja: { id: "loja-3", nome: "Filial RJ" },
-		},
-		{
-			id: "8a9b0c1d-2e3f",
-			nome: "Placa de Vídeo GTX 1660",
-			sku: "GPU-GTX-1660",
-			descricao: "Placa de Vídeo NVIDIA GeForce GTX 1660 6GB",
-			preco_unitario: 1500.0,
-			preco_venda: 1899.9,
-			quantidade: 5,
-			unidade_medida: "unid",
-			quantidade_reposicao: 2,
-			loja: { id: "loja-2", nome: "Filial SP" },
-		},
-		{
-			id: "9a0b1c2d-3e4f",
-			nome: "Headset HyperX Cloud II",
-			sku: "HEA-HYP-CL2",
-			descricao: "Headset Gamer HyperX Cloud II 7.1",
-			preco_unitario: 420.0,
-			preco_venda: 549.9,
-			quantidade: 18,
-			unidade_medida: "unid",
-			quantidade_reposicao: 5,
-			loja: { id: "loja-1", nome: "Matriz" },
-		},
-		{
-			id: "0a1b2c3d-4e5f",
-			nome: "Cabo HDMI 2.0 2m",
-			sku: "CAB-HDM-2M",
-			descricao: "Cabo HDMI 2.0 4K 2 metros",
-			preco_unitario: 15.0,
-			preco_venda: 29.9,
-			quantidade: 45,
-			unidade_medida: "unid",
-			quantidade_reposicao: 15,
-			loja: { id: "loja-3", nome: "Filial RJ" },
-		},
-		{
-			id: "10b2c3d4-5e6f",
-			nome: "Impressora HP DeskJet 2774",
-			sku: "IMP-HP-2774",
-			descricao: "Impressora multifuncional HP DeskJet 2774 Wi-Fi",
-			preco_unitario: 320.0,
-			preco_venda: 399.9,
-			quantidade: 9,
-			unidade_medida: "unid",
-			quantidade_reposicao: 2,
-			loja: { id: "loja-1", nome: "Matriz" },
-		},
-		{
-			id: "11c3d4e5-6f7g",
-			nome: "Webcam Logitech C920",
-			sku: "WEB-LOG-C920",
-			descricao: "Webcam Logitech C920 Full HD",
-			preco_unitario: 350.0,
-			preco_venda: 499.9,
-			quantidade: 14,
-			unidade_medida: "unid",
-			quantidade_reposicao: 4,
-			loja: { id: "loja-2", nome: "Filial SP" },
-		},
-		{
-			id: "12d4e5f6-7g8h",
-			nome: "Fonte Corsair 650W",
-			sku: "FON-COR-650W",
-			descricao: "Fonte Corsair CV650 650W 80 Plus Bronze",
-			preco_unitario: 320.0,
-			preco_venda: 429.9,
-			quantidade: 11,
-			unidade_medida: "unid",
-			quantidade_reposicao: 3,
-			loja: { id: "loja-3", nome: "Filial RJ" },
-		},
-		{
-			id: "13e5f6g7-8h9i",
-			nome: "Cooler Master Hyper 212",
-			sku: "COO-MAS-212",
-			descricao: "Cooler Master Hyper 212 EVO",
-			preco_unitario: 120.0,
-			preco_venda: 179.9,
-			quantidade: 16,
-			unidade_medida: "unid",
-			quantidade_reposicao: 5,
-			loja: { id: "loja-1", nome: "Matriz" },
-		},
-		{
-			id: "14f6g7h8-9i0j",
-			nome: "Pendrive Sandisk 32GB",
-			sku: "PEN-SAN-32GB",
-			descricao: "Pendrive Sandisk Cruzer Blade 32GB USB 2.0",
-			preco_unitario: 25.0,
-			preco_venda: 39.9,
-			quantidade: 60,
-			unidade_medida: "unid",
-			quantidade_reposicao: 20,
-			loja: { id: "loja-2", nome: "Filial SP" },
-		},
-		{
-			id: "15g7h8i9-0j1k",
-			nome: "Roteador TP-Link Archer C6",
-			sku: "ROT-TPL-C6",
-			descricao: "Roteador TP-Link Archer C6 AC1200",
-			preco_unitario: 180.0,
-			preco_venda: 249.9,
-			quantidade: 13,
-			unidade_medida: "unid",
-			quantidade_reposicao: 4,
-			loja: { id: "loja-3", nome: "Filial RJ" },
-		},
-		{
-			id: "16h8i9j0-1k2l",
-			nome: "Estabilizador SMS 300VA",
-			sku: "EST-SMS-300VA",
-			descricao: "Estabilizador SMS 300VA Bivolt",
-			preco_unitario: 90.0,
-			preco_venda: 129.9,
-			quantidade: 22,
-			unidade_medida: "unid",
-			quantidade_reposicao: 7,
-			loja: { id: "loja-1", nome: "Matriz" },
-		},
-		{
-			id: "17i9j0k1-2l3m",
-			nome: "Suporte Monitor Articulado",
-			sku: "SUP-MON-ART",
-			descricao: 'Suporte Articulado para Monitor 13-32"',
-			preco_unitario: 70.0,
-			preco_venda: 119.9,
-			quantidade: 19,
-			unidade_medida: "unid",
-			quantidade_reposicao: 6,
-			loja: { id: "loja-2", nome: "Filial SP" },
-		},
-		{
-			id: "18j0k1l2-3m4n",
-			nome: "Cadeira Gamer ThunderX3",
-			sku: "CAD-GAM-TX3",
-			descricao: "Cadeira Gamer ThunderX3 EC3",
-			preco_unitario: 650.0,
-			preco_venda: 899.9,
-			quantidade: 6,
-			unidade_medida: "unid",
-			quantidade_reposicao: 2,
-			loja: { id: "loja-3", nome: "Filial RJ" },
-		},
-		{
-			id: "19k1l2m3-4n5o",
-			nome: "Hub USB 4 portas",
-			sku: "HUB-USB-4P",
-			descricao: "Hub USB 2.0 4 portas Multilaser",
-			preco_unitario: 30.0,
-			preco_venda: 49.9,
-			quantidade: 35,
-			unidade_medida: "unid",
-			quantidade_reposicao: 10,
-			loja: { id: "loja-1", nome: "Matriz" },
-		},
-		{
-			id: "20l2m3n4-5o6p",
-			nome: "Adaptador HDMI para VGA",
-			sku: "ADA-HDM-VGA",
-			descricao: "Adaptador HDMI para VGA com áudio",
-			preco_unitario: 25.0,
-			preco_venda: 39.9,
-			quantidade: 28,
-			unidade_medida: "unid",
-			quantidade_reposicao: 8,
-			loja: { id: "loja-2", nome: "Filial SP" },
-		},
-	];
+async function getData(
+	setLoading: (arg0: boolean) => void
+): Promise<Produto[]> {
+	const data = await buscarTodosProdutos();
+	setLoading(false);
+	return data;
 }
 
 export default function Invetory() {
-	const data = getData();
+	const [data, setData] = useState<Produto[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		getData(setLoading).then(setData);
+	}, []);
 
 	return (
 		<section className="h-screen bg-white">
 			<Navbar />
-			<DataTable columns={columns} data={data} />
+			<DataTable data={data} columns={columns} loading={loading} />
 		</section>
 	);
 }

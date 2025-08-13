@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { LojaService } from 'src/loja/loja.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { ProfileResponseDto } from './dto/response-profile.dto';
 
 @Injectable()
 export class ProfileService {
@@ -15,9 +14,7 @@ export class ProfileService {
     private lojaService: LojaService,
   ) {}
 
-  async create(
-    createProfileDto: CreateProfileDto,
-  ): Promise<ProfileResponseDto> {
+  async create(createProfileDto: CreateProfileDto): Promise<Profile> {
     const loja = await this.lojaService.findOne(createProfileDto.lojaId);
     const profile = this.profileRepository.create({
       ...createProfileDto,
@@ -25,21 +22,21 @@ export class ProfileService {
     });
     const profileSave = await this.profileRepository.save(profile);
 
-    return this.createProfileResponseDto(profileSave);
+    return profileSave;
   }
 
-  async findOne(id: string): Promise<ProfileResponseDto> {
+  async findOne(id: string): Promise<Profile> {
     const profile = await this.profileRepository.findOne({
       where: { id: id },
     });
     if (!profile) throw new NotFoundException('Perfil não encontrado');
-    return this.createProfileResponseDto(profile);
+    return profile;
   }
 
   async update(
     id: string,
     updateProfileDto: UpdateProfileDto,
-  ): Promise<ProfileResponseDto> {
+  ): Promise<Profile> {
     await this.profileRepository.update(id, updateProfileDto);
     return await this.findOne(id);
   }
@@ -48,16 +45,5 @@ export class ProfileService {
     const result = await this.profileRepository.delete(id);
     if (result.affected === 0)
       throw new NotFoundException('Perfil não encontrado');
-  }
-
-  createProfileResponseDto(profile: Profile): ProfileResponseDto {
-    return {
-      id: profile.id,
-      username: profile.username,
-      nome: profile.nome,
-      sobrenome: profile.sobrenome,
-      createdAt: profile.createdAt,
-      updatedAt: profile.updatedAt,
-    };
   }
 }

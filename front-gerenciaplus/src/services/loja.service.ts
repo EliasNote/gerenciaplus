@@ -1,4 +1,13 @@
+import { Produto } from "@/app/inventory/columns";
 import { createClient } from "@/lib/supabase-browser";
+
+async function getToken() {
+	const supabase = createClient();
+	const {
+		data: { session },
+	} = await supabase.auth.getSession();
+	return session?.access_token;
+}
 
 export async function criarLoja(nome_fantasia: string, cnpj: string) {
 	const response = await fetch(
@@ -45,14 +54,31 @@ export async function criarProfile(
 }
 
 export async function buscarProfilePorId(id: string) {
-	const supabase = createClient();
-	const {
-		data: { session },
-	} = await supabase.auth.getSession();
-	const token = session?.access_token;
+	const token = await getToken();
 
 	const response = await fetch(
 		process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! + `/profile/${id}`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				...(token ? { Authorization: `Bearer ${token}` } : {}),
+			},
+		}
+	);
+
+	if (!response.ok) {
+		throw new Error("Erro ao buscar profile");
+	}
+
+	return response.json();
+}
+
+export async function buscarTodosProdutos(): Promise<Produto[]> {
+	const token = await getToken();
+
+	const response = await fetch(
+		process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! + `/produto`,
 		{
 			method: "GET",
 			headers: {

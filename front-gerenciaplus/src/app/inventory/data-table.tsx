@@ -12,12 +12,11 @@ import {
 	VisibilityState,
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
-import { Filter, Trash2 } from "lucide-react";
+import { Filter, Trash2, Plus } from "lucide-react";
 
 import {
 	TableAdvancedFilters,
 	ColumnFilter,
-	DefinitiveFilters,
 } from "@/components/inventory/Filters";
 import {
 	Table,
@@ -30,10 +29,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Produto } from "./columns";
+import { useTableFilters } from "@/hooks/useTableFilters";
+import { Adicionar } from "@/components/inventory/Adicionar";
 
 export interface DataTableProps {
 	columns: ColumnDef<Produto, unknown>[];
 	data: Produto[];
+	loading: boolean;
 }
 
 const columnLabels: Record<string, string> = {
@@ -47,32 +49,19 @@ const columnLabels: Record<string, string> = {
 	loja_nome: "Fornecedor",
 };
 
-export function DataTable({ columns, data }: DataTableProps) {
-	const precoVendaMin = 0;
-	const precoVendaMax = useMemo(
-		() => Math.max(...data.map((d) => Number(d.preco_venda) || 0), 0),
-		[data]
-	);
-	const precoUnitarioMin = 0;
-	const precoUnitarioMax = useMemo(
-		() => Math.max(...data.map((d) => Number(d.preco_unitario) || 0), 0),
-		[data]
-	);
-	const unidades = useMemo(
-		() =>
-			Array.from(new Set(data.map((d) => d.unidade_medida))).filter(Boolean),
-		[data]
-	);
-
-	const [definitive, setDefinitive] = useState<DefinitiveFilters>({
-		minVenda: precoVendaMin,
-		maxVenda: precoVendaMax,
-		minUnitario: precoUnitarioMin,
-		maxUnitario: precoUnitarioMax,
-		unidadesSelecionadas: [],
-	});
+export function DataTable({ data, columns, loading }: DataTableProps) {
+	const {
+		precoVendaMin,
+		precoVendaMax,
+		precoUnitarioMin,
+		precoUnitarioMax,
+		unidades,
+		definitive,
+		setDefinitive,
+	} = useTableFilters(data);
 
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const [adicionarOpen, setAdicionarOpen] = useState(false);
 
 	const [globalFilter, setGlobalFilter] = useState("");
 	const [sorting, setSorting] = useState<SortingState>([]);
@@ -116,12 +105,7 @@ export function DataTable({ columns, data }: DataTableProps) {
 	});
 
 	const selectedRows = table.getSelectedRowModel().rows;
-	function handleShowSelected() {
-		const nomes = selectedRows
-			.map((r) => (r.original as Produto).nome)
-			.join(", ");
-		alert(`Selecionados: ${nomes}`);
-	}
+	function handleShowSelected() {}
 
 	return (
 		<div className="flex flex-col max-w-[1366px] bg-card rounded border m-auto mt-20">
@@ -138,7 +122,8 @@ export function DataTable({ columns, data }: DataTableProps) {
 						size="lg"
 						onClick={() => setDialogOpen(true)}
 					>
-						Filtros <Filter className="ml-2 h-4 w-4" />
+						Filtros
+						<Filter className="h-4 w-4" />
 					</Button>
 					<ColumnFilter table={table} columnLabels={columnLabels} />
 					<Button
@@ -147,7 +132,16 @@ export function DataTable({ columns, data }: DataTableProps) {
 						disabled={!selectedRows.length}
 						onClick={handleShowSelected}
 					>
-						<Trash2 className="h-4 w-4" /> Excluir
+						<Trash2 className="h-4 w-4" />
+						Excluir
+					</Button>
+					<Button
+						variant="outline"
+						size="lg"
+						onClick={() => setAdicionarOpen(true)}
+					>
+						Adicionar
+						<Plus className="h-4 w-4" />
 					</Button>
 				</div>
 			</div>
@@ -161,6 +155,11 @@ export function DataTable({ columns, data }: DataTableProps) {
 				precoVendaMax={precoVendaMax}
 				precoUnitarioMin={precoUnitarioMin}
 				precoUnitarioMax={precoUnitarioMax}
+			/>
+
+			<Adicionar
+				adicionarOpen={adicionarOpen}
+				setAdicionarOpen={setAdicionarOpen}
 			/>
 
 			<div className="overflow-hidden border">
@@ -182,7 +181,16 @@ export function DataTable({ columns, data }: DataTableProps) {
 						))}
 					</TableHeader>
 					<TableBody>
-						{table.getRowModel().rows.length ? (
+						{loading ? (
+							<TableRow>
+								<TableCell
+									colSpan={columns.length}
+									className="h-24 text-center"
+								>
+									Carregando produtos...
+								</TableCell>
+							</TableRow>
+						) : table.getRowModel().rows.length ? (
 							table.getRowModel().rows.map((row) => (
 								<TableRow
 									key={row.id}
@@ -204,7 +212,7 @@ export function DataTable({ columns, data }: DataTableProps) {
 									colSpan={columns.length}
 									className="h-24 text-center"
 								>
-									No results.
+									Sem registros
 								</TableCell>
 							</TableRow>
 						)}

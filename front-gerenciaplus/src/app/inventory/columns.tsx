@@ -13,12 +13,7 @@ import {
 import { ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
-export type Loja = {
-	id: string;
-	nome: string;
-};
-
-export type Produto = {
+export interface Produto {
 	id: string;
 	nome: string;
 	sku: string;
@@ -28,8 +23,7 @@ export type Produto = {
 	quantidade: number;
 	unidade_medida: string;
 	quantidade_reposicao: number;
-	loja: Loja;
-};
+}
 
 export const header = ({
 	column,
@@ -106,10 +100,10 @@ export const columns: ColumnDef<Produto>[] = [
 		accessorKey: "unidade_medida",
 		header: (props) => header({ ...props, name: "Unid." }),
 	},
-	{
-		accessorKey: "loja.nome",
-		header: (props) => header({ ...props, name: "Forn." }),
-	},
+	// {
+	// 	accessorKey: "loja.nome",
+	// 	header: (props) => header({ ...props, name: "Forn." }),
+	// },
 	{
 		id: "actions",
 		cell: ({ row }) => {
