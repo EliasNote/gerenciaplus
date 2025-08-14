@@ -11,7 +11,7 @@ import {
 	useReactTable,
 	VisibilityState,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Filter, Trash2, Plus } from "lucide-react";
 
 import {
@@ -59,6 +59,16 @@ export function DataTable({ data, columns, loading }: DataTableProps) {
 		definitive,
 		setDefinitive,
 	} = useTableFilters(data);
+
+	const [isMobile, setIsMobile] = useState(false);
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth <= 700);
+		};
+		handleResize();
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [adicionarOpen, setAdicionarOpen] = useState(false);
@@ -122,25 +132,27 @@ export function DataTable({ data, columns, loading }: DataTableProps) {
 						size="lg"
 						onClick={() => setDialogOpen(true)}
 					>
-						Filtros
+						{!isMobile && "Filtros"}
 						<Filter className="h-4 w-4" />
 					</Button>
-					<ColumnFilter table={table} columnLabels={columnLabels} />
+					<ColumnFilter table={table} columnLabels={columnLabels}>
+						{!isMobile && "Colunas"}
+					</ColumnFilter>
 					<Button
 						variant="destructive"
 						size="lg"
 						disabled={!selectedRows.length}
 						onClick={handleShowSelected}
 					>
+						{!isMobile && "Excluir"}
 						<Trash2 className="h-4 w-4" />
-						Excluir
 					</Button>
 					<Button
 						variant="outline"
 						size="lg"
 						onClick={() => setAdicionarOpen(true)}
 					>
-						Adicionar
+						{!isMobile && "Adicionar"}
 						<Plus className="h-4 w-4" />
 					</Button>
 				</div>
@@ -160,6 +172,7 @@ export function DataTable({ data, columns, loading }: DataTableProps) {
 			<Adicionar
 				adicionarOpen={adicionarOpen}
 				setAdicionarOpen={setAdicionarOpen}
+				data={data}
 			/>
 
 			<div className="overflow-hidden border">

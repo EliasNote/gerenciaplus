@@ -39,16 +39,13 @@ export function Adicionar(props: AdicionarProps) {
 	});
 	const [errors, setErrors] = useState<{ [k: string]: string }>({});
 
-	const fornecedores = [
-		"Fornecedor A",
-		"Fornecedor B",
-		"Fornecedor C",
-		// ...adicione mais conforme necessário
-	];
-
-	function getFornecedores() {
-		props.data.
-	}
+	const fornecedores = Array.from(
+		new Map(
+			props.data
+				.filter((p) => p.fornecedor)
+				.map((p) => [p.fornecedor.id, p.fornecedor])
+		).values()
+	);
 
 	function validate() {
 		const newErrors: { [k: string]: string } = {};
@@ -259,8 +256,8 @@ export function Adicionar(props: AdicionarProps) {
 								</SelectTrigger>
 								<SelectContent>
 									{fornecedores.map((f) => (
-										<SelectItem key={f} value={f}>
-											{f}
+										<SelectItem key={f.id} value={f.id}>
+											{f.nome}
 										</SelectItem>
 									))}
 								</SelectContent>

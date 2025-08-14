@@ -141,6 +141,7 @@ export default function Cadastro() {
 		}
 
 		setLoading(false);
+		await supabase.auth.signOut();
 		setShowSuccessIcon(true);
 		setTimeout(() => {
 			setShowSuccessIcon(false);

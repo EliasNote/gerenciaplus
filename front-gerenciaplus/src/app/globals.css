@@ -1,3 +1,33 @@
+/* Scrollbar para tema claro */
+::-webkit-scrollbar {
+	width: 10px;
+	background: #e0e0e0;
+}
+::-webkit-scrollbar-thumb {
+	background: #bdbdbd;
+	border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: #9e9e9e;
+}
+* {
+	scrollbar-color: #bdbdbd #e0e0e0;
+}
+
+@media (prefers-color-scheme: dark) {
+	::-webkit-scrollbar {
+		background: #23272f;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #3a3f4b;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #555a66;
+	}
+	* {
+		scrollbar-color: #3a3f4b #23272f;
+	}
+}
 /* Remove os botões de aumentar/diminuir dos inputs type=number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -110,6 +140,9 @@ input[type="number"] {
 
 @media (prefers-color-scheme: dark) {
 	:root {
+		--scrollbar-bg: #23272f;
+		--scrollbar-thumb: #3a3f4b;
+		--scrollbar-thumb-hover: #555a66;
 		--color-blizzard-blue: #00171f;
 		--color-eerie-black: #ededed;
 		--color-white: #0d1b2a;

@@ -142,18 +142,22 @@ export function TableAdvancedFilters(props: TableAdvancedFiltersProps) {
 	);
 }
 
+import { ReactNode } from "react";
+
 export function ColumnFilter<TData>({
 	table,
 	columnLabels,
+	children,
 }: {
 	table: Table<TData>;
 	columnLabels: Record<string, string>;
+	children?: ReactNode;
 }) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline" size="lg">
-					Colunas
+					{children}
 					<ChevronDown className=" h-4 w-4" />
 				</Button>
 			</DropdownMenuTrigger>

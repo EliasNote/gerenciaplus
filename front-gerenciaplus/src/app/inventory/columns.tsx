@@ -13,6 +13,21 @@ import {
 import { ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
+export interface Fornecedor {
+	id: string;
+	nome: string;
+	cnpj?: string | null;
+	email?: string | null;
+	telefone?: string | null;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+export interface Loja {
+	id: string;
+	nome: string;
+}
+
 export interface Produto {
 	id: string;
 	nome: string;
@@ -23,6 +38,8 @@ export interface Produto {
 	quantidade: number;
 	unidade_medida: string;
 	quantidade_reposicao: number;
+	fornecedor: Fornecedor;
+	loja: Loja;
 }
 
 export const header = ({
