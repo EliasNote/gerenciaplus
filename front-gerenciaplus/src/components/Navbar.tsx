@@ -1,5 +1,4 @@
 "use client";
-import { useUsername } from "@/hooks/useUsername";
 import { createClient } from "@/lib/supabase-browser";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
-	const username = useUsername();
 	const currentPath = usePathname();
 	const [pathname, setPathname] = useState("");
 	const [configOpen, setConfigOpen] = useState(false);
@@ -36,7 +34,7 @@ export default function Navbar() {
 						className={`absolute bottom-0 left-0 h-[4px] w-0 bg-static-white duration-200 ${
 							isActive ? "w-full" : "w-0"
 						} group-hover:w-full`}
-					></span>
+					/>
 				</button>
 			</Link>
 		);
@@ -51,7 +49,6 @@ export default function Navbar() {
 				<NavButton text="Estoque" href="/inventory" />
 			</div>
 			<div className="flex flex-row gap-[10px]">
-				<p>{username}</p>
 				<div
 					className="relative w-[26px] h-[26px] group cursor-pointer"
 					onClick={() => setConfigOpen((open) => !open)}

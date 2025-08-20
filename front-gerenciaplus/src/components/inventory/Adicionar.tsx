@@ -24,8 +24,11 @@ interface AdicionarProps {
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Produto } from "@/app/inventory/columns";
+import { AdicionarFornecedor } from "./AdicionarFornecedor";
 
 export function Adicionar(props: AdicionarProps) {
+	const [addFornecedorOpen, setAddFornecedorOpen] = useState(false);
+
 	const [form, setForm] = useState({
 		nome: "",
 		sku: "",
@@ -254,6 +257,13 @@ export function Adicionar(props: AdicionarProps) {
 								>
 									<SelectValue placeholder="Selecione um fornecedor" />
 								</SelectTrigger>
+								<button
+									type="button"
+									onClick={() => setAddFornecedorOpen(true)}
+									className="text-sapphire hover:underline font-semibold text-[14px]"
+								>
+									Novo Fornecedor
+								</button>
 								<SelectContent>
 									{fornecedores.map((f) => (
 										<SelectItem key={f.id} value={f.id}>
@@ -275,6 +285,10 @@ export function Adicionar(props: AdicionarProps) {
 						</Button>
 					</DialogFooter>
 				</form>
+				<AdicionarFornecedor
+					open={addFornecedorOpen}
+					setOpen={setAddFornecedorOpen}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

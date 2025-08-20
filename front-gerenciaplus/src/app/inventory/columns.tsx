@@ -19,13 +19,28 @@ export interface Fornecedor {
 	cnpj?: string | null;
 	email?: string | null;
 	telefone?: string | null;
+	produtos: Produto[];
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 export interface Loja {
 	id: string;
+	nome_fantasia: string;
+	cnpj: string;
+	data_cadastro: Date;
+	profiles: Profile[];
+	produtos: Produto[];
+}
+
+export interface Profile {
+	id: string;
+	username: string;
 	nome: string;
+	sobrenome: string;
+	loja: Loja;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface Produto {
