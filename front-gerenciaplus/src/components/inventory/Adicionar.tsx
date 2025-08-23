@@ -23,11 +23,19 @@ interface AdicionarProps {
 
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
-import { Produto } from "@/app/inventory/columns";
+import { Fornecedor, Produto } from "@/app/inventory/columns";
 import { AdicionarFornecedor } from "./AdicionarFornecedor";
+import { useFornecedores } from "@/hooks/useFornecedores";
+import { FormField } from "./FormField";
 
 export function Adicionar(props: AdicionarProps) {
 	const [addFornecedorOpen, setAddFornecedorOpen] = useState(false);
+	const { fornecedores, adicionarFornecedor } = useFornecedores();
+
+	function handleFornecedorAdicionado(novoFornecedor: Fornecedor) {
+		adicionarFornecedor(novoFornecedor);
+		setForm((prev) => ({ ...prev, fornecedor: novoFornecedor.id }));
+	}
 
 	const [form, setForm] = useState({
 		nome: "",
@@ -41,14 +49,6 @@ export function Adicionar(props: AdicionarProps) {
 		fornecedor: "",
 	});
 	const [errors, setErrors] = useState<{ [k: string]: string }>({});
-
-	const fornecedores = Array.from(
-		new Map(
-			props.data
-				.filter((p) => p.fornecedor)
-				.map((p) => [p.fornecedor.id, p.fornecedor])
-		).values()
-	);
 
 	function validate() {
 		const newErrors: { [k: string]: string } = {};
@@ -91,38 +91,20 @@ export function Adicionar(props: AdicionarProps) {
 				</DialogHeader>
 				<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 					<div className="flex flex-row gap-4">
-						<div className="flex-1 flex flex-col gap-1">
-							<label htmlFor="nome" className="text-sm font-medium">
-								Nome
-							</label>
-							<Input
-								id="nome"
-								name="nome"
-								value={form.nome}
-								onChange={handleChange}
-								aria-invalid={!!errors.nome}
-								className={errors.nome ? "border-red-500" : ""}
-							/>
-							{errors.nome && (
-								<span className="text-red-500 text-xs">{errors.nome}</span>
-							)}
-						</div>
-						<div className="flex-1 flex flex-col gap-1">
-							<label htmlFor="sku" className="text-sm font-medium">
-								SKU
-							</label>
-							<Input
-								id="sku"
-								name="sku"
-								value={form.sku}
-								onChange={handleChange}
-								aria-invalid={!!errors.sku}
-								className={errors.sku ? "border-red-500" : ""}
-							/>
-							{errors.sku && (
-								<span className="text-red-500 text-xs">{errors.sku}</span>
-							)}
-						</div>
+						<FormField
+							id="nome"
+							label="Nome"
+							value={form.nome}
+							onChange={handleChange}
+							error={errors.nome}
+						/>
+						<FormField
+							id="sku"
+							label="SKU"
+							value={form.sku}
+							onChange={handleChange}
+							error={errors.sku}
+						/>
 					</div>
 					<div className="flex flex-col gap-1">
 						<label htmlFor="descricao" className="text-sm font-medium">
@@ -139,107 +121,45 @@ export function Adicionar(props: AdicionarProps) {
 						)}
 					</div>
 					<div className="flex flex-row gap-4">
-						<div className="flex-1 flex flex-col gap-1">
-							<label htmlFor="preco_unitario" className="text-sm font-medium">
-								Preço Unitário
-							</label>
-							<Input
-								id="preco_unitario"
-								name="preco_unitario"
-								value={form.preco_unitario}
-								onChange={handleChange}
-								aria-invalid={!!errors.preco_unitario}
-								type="number"
-								className={errors.preco_unitario ? "border-red-500" : ""}
-							/>
-							{errors.preco_unitario && (
-								<span className="text-red-500 text-xs">
-									{errors.preco_unitario}
-								</span>
-							)}
-						</div>
-						<div className="flex-1 flex flex-col gap-1">
-							<label htmlFor="preco_venda" className="text-sm font-medium">
-								Preço de Venda
-							</label>
-							<Input
-								id="preco_venda"
-								name="preco_venda"
-								value={form.preco_venda}
-								onChange={handleChange}
-								aria-invalid={!!errors.preco_venda}
-								type="number"
-								className={errors.preco_venda ? "border-red-500" : ""}
-							/>
-							{errors.preco_venda && (
-								<span className="text-red-500 text-xs">
-									{errors.preco_venda}
-								</span>
-							)}
-						</div>
+						<FormField
+							id="preco_unitario"
+							label="Preço Unitário"
+							value={form.preco_unitario}
+							onChange={handleChange}
+							error={errors.preco_unitario}
+						/>
+						<FormField
+							id="preco_venda"
+							label="Preço de Venda"
+							value={form.preco_venda}
+							onChange={handleChange}
+							error={errors.preco_venda}
+						/>
 					</div>
 					<div className="flex flex-row gap-4">
-						<div className="flex-1 flex flex-col gap-1">
-							<label htmlFor="quantidade" className="text-sm font-medium">
-								Quantidade
-							</label>
-							<Input
-								id="quantidade"
-								name="quantidade"
-								value={form.quantidade}
-								onChange={handleChange}
-								aria-invalid={!!errors.quantidade}
-								type="number"
-								className={errors.quantidade ? "border-red-500" : ""}
-							/>
-							{errors.quantidade && (
-								<span className="text-red-500 text-xs">
-									{errors.quantidade}
-								</span>
-							)}
-						</div>
-						<div className="flex-1 flex flex-col gap-1">
-							<label htmlFor="unidade_medida" className="text-sm font-medium">
-								Unidade de Medida
-							</label>
-							<Input
-								id="unidade_medida"
-								name="unidade_medida"
-								value={form.unidade_medida}
-								onChange={handleChange}
-								aria-invalid={!!errors.unidade_medida}
-								className={errors.unidade_medida ? "border-red-500" : ""}
-							/>
-							{errors.unidade_medida && (
-								<span className="text-red-500 text-xs">
-									{errors.unidade_medida}
-								</span>
-							)}
-						</div>
+						<FormField
+							id="quantidade"
+							label="Quantidade"
+							value={form.quantidade}
+							onChange={handleChange}
+							error={errors.quantidade}
+						/>
+						<FormField
+							id="unidade_medida"
+							label="Unidade de Medida"
+							value={form.unidade_medida}
+							onChange={handleChange}
+							error={errors.unidade_medida}
+						/>
 					</div>
 					<div className="flex flex-row gap-4">
-						<div className="flex-1 flex flex-col gap-1">
-							<label
-								htmlFor="quantidade_reposicao"
-								className="text-sm font-medium"
-							>
-								Quantidade de Reposição
-							</label>
-							<Input
-								id="quantidade_reposicao"
-								name="quantidade_reposicao"
-								value={form.quantidade_reposicao}
-								onChange={handleChange}
-								aria-invalid={!!errors.quantidade_reposicao}
-								type="number"
-								className={errors.quantidade_reposicao ? "border-red-500" : ""}
-							/>
-							{errors.quantidade_reposicao && (
-								<span className="text-red-500 text-xs">
-									{errors.quantidade_reposicao}
-								</span>
-							)}
-						</div>
+						<FormField
+							id="quantidade_reposicao"
+							label="Quantidade de Reposição"
+							value={form.quantidade_reposicao}
+							onChange={handleChange}
+							error={errors.quantidade_reposicao}
+						/>
 						<div className="flex-1 flex flex-col gap-1">
 							<label htmlFor="fornecedor" className="text-sm font-medium">
 								Fornecedor
@@ -253,17 +173,13 @@ export function Adicionar(props: AdicionarProps) {
 								<SelectTrigger
 									id="fornecedor"
 									aria-invalid={!!errors.fornecedor}
-									className={errors.fornecedor ? "border-red-500" : ""}
+									className={`w-full ${
+										errors.fornecedor ? "border-red-500" : ""
+									}`}
 								>
 									<SelectValue placeholder="Selecione um fornecedor" />
 								</SelectTrigger>
-								<button
-									type="button"
-									onClick={() => setAddFornecedorOpen(true)}
-									className="text-sapphire hover:underline font-semibold text-[14px]"
-								>
-									Novo Fornecedor
-								</button>
+
 								<SelectContent>
 									{fornecedores.map((f) => (
 										<SelectItem key={f.id} value={f.id}>
@@ -272,6 +188,13 @@ export function Adicionar(props: AdicionarProps) {
 									))}
 								</SelectContent>
 							</Select>
+							<button
+								type="button"
+								onClick={() => setAddFornecedorOpen(true)}
+								className="text-sapphire hover:underline font-semibold text-[14px]"
+							>
+								Novo Fornecedor
+							</button>
 							{errors.fornecedor && (
 								<span className="text-red-500 text-xs">
 									{errors.fornecedor}
@@ -288,6 +211,7 @@ export function Adicionar(props: AdicionarProps) {
 				<AdicionarFornecedor
 					open={addFornecedorOpen}
 					setOpen={setAddFornecedorOpen}
+					onFornecedorAdicionado={handleFornecedorAdicionado}
 				/>
 			</DialogContent>
 		</Dialog>

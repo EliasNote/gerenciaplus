@@ -18,13 +18,12 @@ export class FornecedorService {
   }
 
   async findAll(): Promise<Fornecedor[]> {
-    return this.fornecedorRepository.find({ relations: ['profile'] });
+    return this.fornecedorRepository.find();
   }
 
   async findOne(id: string): Promise<Fornecedor | null> {
     return this.fornecedorRepository.findOne({
       where: { id },
-      relations: ['profile'],
     });
   }
 

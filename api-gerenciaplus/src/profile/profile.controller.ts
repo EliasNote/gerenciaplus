@@ -15,7 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Profile } from './entities/profile.entity';
 import { ProfileResponseDto } from './dto/response-profile.dto';
 
-@Controller('profile')
+@Controller('profiles')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 

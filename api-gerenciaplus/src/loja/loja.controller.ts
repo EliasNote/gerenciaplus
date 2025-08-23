@@ -13,7 +13,7 @@ import { CreateLojaDto } from './dto/create-loja.dto';
 import { UpdateLojaDto } from './dto/update-loja.dto';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('loja')
+@Controller('lojas')
 export class LojaController {
   constructor(private readonly lojaService: LojaService) {}
 

@@ -11,7 +11,7 @@ async function getToken() {
 
 export async function criarLoja(nome_fantasia: string, cnpj: string) {
 	const response = await fetch(
-		process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! + "/loja",
+		process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! + "/lojas",
 		{
 			method: "POST",
 			headers: {
@@ -36,7 +36,7 @@ export async function criarProfile(
 	lojaId: string
 ) {
 	const response = await fetch(
-		process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! + "/profile",
+		process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! + "/profiles",
 		{
 			method: "POST",
 			headers: {
@@ -78,7 +78,7 @@ export async function buscarTodosProdutos(): Promise<Produto[]> {
 	const token = await getToken();
 
 	const response = await fetch(
-		process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! + `/produto`,
+		process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! + `/produtos`,
 		{
 			method: "GET",
 			headers: {

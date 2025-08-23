@@ -16,7 +16,7 @@ import { ResponseFornecedorDto } from './dto/response-fornecedor.dto';
 import { Fornecedor } from './entities/fornecedor.entity';
 
 @UseGuards(AuthGuard('jwt'))
-@Controller('fornecedor')
+@Controller('fornecedores')
 export class FornecedorController {
   constructor(private readonly fornecedorService: FornecedorService) {}
 
