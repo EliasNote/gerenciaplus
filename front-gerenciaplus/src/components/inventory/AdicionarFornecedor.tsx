@@ -6,7 +6,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "../ui/dialog";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { criarFornecedor } from "@/services/fornecedor.service";
 import { Fornecedor } from "@/app/inventory/columns";

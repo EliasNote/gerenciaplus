@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import { DataTable } from "@/app/inventory/data-table";
-import { buscarTodosProdutos } from "@/services/loja.service";
 import { columns, Produto } from "@/app/inventory/columns";
+import { buscarTodosProdutos } from "@/services/produto.service";
 
 async function getData(
 	setLoading: (arg0: boolean) => void

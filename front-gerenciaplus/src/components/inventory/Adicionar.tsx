@@ -6,7 +6,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "../ui/dialog";
-import { Input } from "../ui/input";
 import {
 	Select,
 	SelectContent,
@@ -27,10 +26,14 @@ import { Fornecedor, Produto } from "@/app/inventory/columns";
 import { AdicionarFornecedor } from "./AdicionarFornecedor";
 import { useFornecedores } from "@/hooks/useFornecedores";
 import { FormField } from "./FormField";
+import { criarProduto } from "@/services/produto.service";
+import { useUser } from "@/context/UserContext";
 
 export function Adicionar(props: AdicionarProps) {
 	const [addFornecedorOpen, setAddFornecedorOpen] = useState(false);
 	const { fornecedores, adicionarFornecedor } = useFornecedores();
+	const { profile } = useUser();
+	const lojaId = profile?.loja?.id;
 
 	function handleFornecedorAdicionado(novoFornecedor: Fornecedor) {
 		adicionarFornecedor(novoFornecedor);
@@ -75,11 +78,22 @@ export function Adicionar(props: AdicionarProps) {
 		setForm((prev) => ({ ...prev, [name]: value }));
 	}
 
-	function handleSubmit(e: React.FormEvent) {
+	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		if (!validate()) return;
-		// Aqui você pode chamar a função de adicionar produto
-		// Exemplo: onAdd(form)
+		if (!lojaId) {
+			setErrors((prev) => ({ ...prev, loja: "Loja indisponível no momento" }));
+			return;
+		}
+		await criarProduto({
+			...form,
+			preco_unitario: Number(form.preco_unitario),
+			preco_venda: Number(form.preco_venda),
+			quantidade: Number(form.quantidade),
+			quantidade_reposicao: Number(form.quantidade_reposicao),
+			fornecedorId: form.fornecedor,
+			lojaId: lojaId,
+		});
 		props.setAdicionarOpen(false);
 	}
 
@@ -191,7 +205,7 @@ export function Adicionar(props: AdicionarProps) {
 							<button
 								type="button"
 								onClick={() => setAddFornecedorOpen(true)}
-								className="text-sapphire hover:underline font-semibold text-[14px]"
+								className="self-start text-sapphire hover:underline font-semibold text-[14px]"
 							>
 								Novo Fornecedor
 							</button>

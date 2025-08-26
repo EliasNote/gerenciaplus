@@ -1,9 +1,22 @@
-import { Fornecedor } from "@/app/inventory/columns";
+import { Produto } from "@/app/inventory/columns";
 import { createClient } from "@/lib/supabase-browser";
 
 const url =
 	process.env.NEXT_PUBLIC_GERENCIAPLUS_API_BASEURL! +
-	process.env.NEXT_PUBLIC_GERENCIAPLIS_API_FORNECEDOR_URI!;
+	process.env.NEXT_PUBLIC_GERENCIAPLIS_API_PRODUTO_URI!;
+
+export interface CreateProdutoDto {
+	nome: string;
+	sku: string;
+	descricao: string;
+	preco_unitario: number;
+	preco_venda: number;
+	quantidade: number;
+	unidade_medida: string;
+	quantidade_reposicao: number;
+	fornecedorId: string;
+	lojaId: string;
+}
 
 async function getToken() {
 	const supabase = createClient();
@@ -13,36 +26,26 @@ async function getToken() {
 	return session?.access_token;
 }
 
-export interface CreateFornecedor {
-	nome: string;
-	cnpj: string;
-	email?: string;
-	telefone?: string;
-}
-
-export async function criarFornecedor(
-	data: CreateFornecedor
-): Promise<Fornecedor> {
+export async function criarProduto(produto: CreateProdutoDto) {
 	const token = await getToken();
 
-	const res = await fetch(url, {
+	const response = await fetch(url, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 			...(token ? { Authorization: `Bearer ${token}` } : {}),
 		},
-		body: JSON.stringify(data),
+		body: JSON.stringify(produto),
 	});
 
-	if (!res.ok) {
-		const error = await res.text();
-		throw new Error(error || "Erro ao criar fornecedor");
+	if (!response.ok) {
+		throw new Error("Erro ao buscar profile");
 	}
 
-	return res.json();
+	return response.json();
 }
 
-export async function buscarFornecedores(): Promise<Fornecedor[]> {
+export async function buscarTodosProdutos(): Promise<Produto[]> {
 	const token = await getToken();
 
 	const response = await fetch(url, {
@@ -52,8 +55,10 @@ export async function buscarFornecedores(): Promise<Fornecedor[]> {
 			...(token ? { Authorization: `Bearer ${token}` } : {}),
 		},
 	});
+
 	if (!response.ok) {
-		throw new Error("Erro ao buscar fornecedores");
+		throw new Error("Erro ao buscar profile");
 	}
+
 	return response.json();
 }

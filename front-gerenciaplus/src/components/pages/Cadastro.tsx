@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase-browser";
 import { useRouter } from "next/navigation";
-import { criarLoja, criarProfile } from "@/services/loja.service";
+import { criarLoja } from "@/services/loja.service";
 import Lottie from "lottie-react";
 import mailAnimation from "@/../public/animation/mail.json";
 import darkMailAnimation from "@/../public/animation/dark-mail.json";
@@ -14,6 +14,7 @@ import PasswordEyeIcon from "../ui/PasswordEyeIcon";
 import ValidationBox from "@/components/ui/ValidationBox";
 import { CustomInput } from "../ui/CustomInput";
 import { useSystemTheme } from "@/hooks/useSystemTheme";
+import { criarProfile } from "@/services/profile.service";
 
 function getStep1Errors(enterpriseName: string, cnpj: string) {
 	const errors: string[] = [];
