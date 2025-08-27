@@ -13,7 +13,7 @@ async function getData(
 	return data;
 }
 
-export default function Invetory() {
+export default function Inventory() {
 	const [data, setData] = useState<Produto[]>([]);
 	const [loading, setLoading] = useState(true);
 

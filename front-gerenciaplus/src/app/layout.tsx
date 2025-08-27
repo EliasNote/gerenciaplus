@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Karla, Roboto } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/context/UserContext";
 import { createClient } from "@/lib/supabase-server";
@@ -21,15 +21,20 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const {
-		data: { session },
-	} = await supabase.auth.getSession();
+		data: { user },
+	} = await supabase.auth.getUser();
+	const { data: sessionData } = await supabase.auth.getSession();
+	const token = sessionData.session?.access_token;
 
 	let profile = undefined;
-	if (session?.user?.id) {
-		const token = session.access_token;
-		profile = await buscarProfilePorId(session.user.id, token);
+	if (user?.id && token) {
+		try {
+			profile = await buscarProfilePorId(user.id, token);
+		} catch {
+			profile = undefined;
+		}
 	}
 
 	return (

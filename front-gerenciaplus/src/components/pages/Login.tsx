@@ -63,9 +63,10 @@ export default function Login() {
 
 		if (error) {
 			setError(translateError(error.message));
-		} else {
-			router.replace("/dashboard");
+			return;
 		}
+
+		router.replace("/dashboard");
 	};
 
 	return (
